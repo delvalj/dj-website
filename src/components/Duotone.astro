@@ -1,0 +1,57 @@
+---
+// Efecto verde (duotono + grano) aplicado desde la web sobre cualquier foto o vídeo normal.
+// 1. La foto o el vídeo se pasa a blanco y negro con más contraste.
+// 2. Una capa verde con mix-blend-mode "color" la tiñe conservando la luz de cada punto:
+//    sombras → negro, tonos medios → verde, luces → verde muy pálido.
+// 3. Encima, grano generado con SVG (no hay que descargar ninguna imagen).
+// Los valores se ajustan con las variables --duo-* de abajo.
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<div class:list={["duotone", className]}>
+  <slot />
+  <span class="duo-tint" aria-hidden="true"></span>
+  <span class="duo-grain" aria-hidden="true"></span>
+</div>
+
+<style>
+  .duotone {
+    --duo-contrast: 1.35;
+    --duo-brightness: 1.05;
+    --duo-grain: 0.45;
+
+    position: relative;
+    overflow: hidden;
+    isolation: isolate; /* las mezclas solo afectan a lo que hay dentro */
+    background: var(--black);
+  }
+
+  .duotone > :global(img),
+  .duotone > :global(picture img),
+  .duotone > :global(video),
+  .duotone > :global(.duo-media) {
+    filter: grayscale(1) contrast(var(--duo-contrast)) brightness(var(--duo-brightness));
+  }
+
+  .duo-tint,
+  .duo-grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .duo-tint {
+    background: var(--green);
+    mix-blend-mode: color;
+  }
+
+  .duo-grain {
+    opacity: var(--duo-grain);
+    mix-blend-mode: overlay;
+    background-size: 180px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+</style>

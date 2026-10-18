@@ -1,0 +1,74 @@
+---
+// Portada: foto o vídeo a todo el ancho con el efecto verde, más el botón del newsletter.
+import Duotone from "./Duotone.astro";
+import HeroMedia from "./HeroMedia.astro";
+
+const photos = import.meta.glob("/content/photos/hero.{jpg,jpeg,png,webp}");
+const isPlaceholder = Object.keys(photos).length === 0;
+---
+
+<section class="hero" aria-label="KAS:ST">
+  <Duotone class="hero-frame">
+    <HeroMedia />
+  </Duotone>
+
+  {isPlaceholder && <p class="hero-note mono">Placeholder — add content/photos/hero.jpg</p>}
+
+  <!-- La ventana del newsletter se conecta en la fase 6 -->
+  <button type="button" class="newsletter mono" data-newsletter-open>Join the newsletter</button>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    /* Móvil: casi toda la pantalla, en vertical */
+    height: calc(100svh - var(--header-h));
+    min-height: 480px;
+  }
+
+  .hero :global(.hero-frame) {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero-note {
+    position: absolute;
+    top: 16px;
+    left: var(--gutter);
+    margin: 0;
+    padding: 4px 8px;
+    font-size: 10px;
+    background: var(--black);
+  }
+
+  .newsletter {
+    position: absolute;
+    left: var(--gutter);
+    right: var(--gutter);
+    bottom: 24px;
+    padding: 18px 24px;
+    background: var(--green);
+    color: var(--black);
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .newsletter:hover {
+    background: var(--black);
+    color: var(--green);
+    outline: 1px solid var(--green);
+  }
+
+  /* Escritorio: proporción del boceto y botón abajo a la derecha */
+  @media (min-width: 768px) {
+    .hero {
+      height: min(calc(100svh - var(--header-h)), 57vw);
+      min-height: 420px;
+    }
+    .newsletter {
+      left: auto;
+      right: var(--gutter);
+      bottom: 40px;
+      padding: 18px 48px;
+    }
+  }
+</style>

@@ -15,7 +15,7 @@ Plan completo y razonamiento: `docs/plan.md`.
 - CMS: Sveltia CMS (compatible con Decap) en /admin; edita `src/content/shows.yaml`.
 
 ## Diseño
-- Fondo #000, un único verde neón (variable `--green`, ~#00E83A). Sin otros colores.
+- Fondo #000, un único verde neón (variable `--green` = #02F233, medido en el boceto). Sin otros colores.
 - Títulos: Archivo expandida y Black, en mayúsculas. Lista/UI: monoespaciada (Space Mono), mayúsculas, con espacio entre letras.
 - Sin bordes redondeados. Referencia: content/design/home-mockup.png.
 - Fotos y vídeo: duotono negro→verde→verde pálido + grano, hecho en CSS (grayscale + mix-blend-mode, ruido SVG feTurbulence).

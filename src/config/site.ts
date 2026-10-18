@@ -1,13 +1,22 @@
 // Toda la información editable de la web en un solo sitio.
 // Los valores provisionales llevan "// TODO".
 
+type Hero =
+  // Foto: se toma de content/photos/hero.jpg (también vale .png o .webp).
+  // position = qué parte de la foto se mantiene al recortarla en móvil ("50% 30%" = centro, algo arriba).
+  | { type: "image"; position: string }
+  // Vídeo: archivos en public/media/. srcMobile (vertical) es opcional; poster es la imagen fija.
+  | { type: "video"; src: string; srcMobile?: string; poster: string; position: string };
+
+// Para pasar a vídeo, sube los archivos a public/media/ y cambia la portada por:
+// { type: "video", src: "/media/hero.mp4", srcMobile: "/media/hero-mobile.mp4", poster: "/media/hero-poster.jpg", position: "50% 50%" }
+const hero: Hero = { type: "image", position: "50% 50%" };
+
 export const site = {
   name: "KAS:ST",
   url: "https://kasst.art", // TODO: dominio por confirmar
 
-  // Portada. Para pasar a vídeo, sube los archivos a public/media/ y cambia a:
-  // hero: { type: "video", src: "/media/hero.mp4", srcMobile: "/media/hero-mobile.mp4", poster: "/media/hero-poster.jpg" },
-  hero: { type: "image", src: "content/photos/hero.jpg" },
+  hero,
 
   contact: {
     bookings: ["katarina@lovelive.agency"],
