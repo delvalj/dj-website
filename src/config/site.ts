@@ -25,12 +25,12 @@ export const site = {
 
   social: {
     instagram: "https://instagram.com/KASST_LIVE",
-    spotify: "https://open.spotify.com/", // TODO: enlace real
-    appleMusic: "https://music.apple.com/", // TODO: enlace real
-    youtube: "https://www.youtube.com/", // TODO: enlace real
-    facebook: "https://www.facebook.com/", // TODO: enlace real
-    soundcloud: "https://soundcloud.com/", // TODO: enlace real
-    residentAdvisor: "https://ra.co/", // TODO: enlace real
+    spotify: "https://open.spotify.com/", // TODO: poner el perfil real (ahora: página principal)
+    appleMusic: "https://music.apple.com/", // TODO: poner el perfil real (ahora: página principal)
+    youtube: "https://www.youtube.com/", // TODO: poner el perfil real (ahora: página principal)
+    facebook: "https://www.facebook.com/", // TODO: poner el perfil real (ahora: página principal)
+    soundcloud: "https://soundcloud.com/", // TODO: poner el perfil real (ahora: página principal)
+    residentAdvisor: "https://ra.co/", // TODO: poner el perfil real (ahora: página principal)
   },
 
   // Adónde se envían las altas. "netlify" = Netlify Forms (temporal).

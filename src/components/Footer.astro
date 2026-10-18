@@ -1,0 +1,32 @@
+---
+// Pie de página. El enlace a Privacy se añade en la fase 5, junto con la página /privacy.
+import SocialIcons from "./SocialIcons.astro";
+import { site } from "../config/site";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <SocialIcons />
+  <p class="mono">© {year} {site.name}</p>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--green-dim);
+    padding: 32px var(--gutter);
+    display: grid;
+    gap: 16px;
+    justify-items: start;
+  }
+  .footer p {
+    margin: 0;
+    font-size: 11px;
+  }
+  @media (min-width: 768px) {
+    .footer {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+  }
+</style>

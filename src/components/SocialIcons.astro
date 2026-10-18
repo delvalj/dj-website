@@ -1,0 +1,85 @@
+---
+// Fila de iconos de redes. Los enlaces se cambian en src/config/site.ts (social).
+// Iconos de Simple Icons (libres). Resident Advisor ya no está en la librería: se muestra "RA" en texto.
+import {
+  siApplemusic,
+  siFacebook,
+  siInstagram,
+  siSoundcloud,
+  siSpotify,
+  siYoutube,
+} from "simple-icons";
+import { site } from "../config/site";
+
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+
+const links = [
+  { name: "Instagram", href: site.social.instagram, path: siInstagram.path },
+  { name: "Spotify", href: site.social.spotify, path: siSpotify.path },
+  { name: "Apple Music", href: site.social.appleMusic, path: siApplemusic.path },
+  { name: "YouTube", href: site.social.youtube, path: siYoutube.path },
+  { name: "Facebook", href: site.social.facebook, path: siFacebook.path },
+  { name: "SoundCloud", href: site.social.soundcloud, path: siSoundcloud.path },
+  { name: "Resident Advisor", href: site.social.residentAdvisor, path: null },
+];
+---
+
+<ul class:list={["social", className]}>
+  {
+    links.map((l) => (
+      <li>
+        <a href={l.href} target="_blank" rel="noopener noreferrer" aria-label={`KAS:ST on ${l.name}`}>
+          {l.path ? (
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d={l.path} />
+            </svg>
+          ) : (
+            <span class="ra display" aria-hidden="true">RA</span>
+          )}
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .social {
+    --icon: 20px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .social a {
+    /* Zona táctil de 40 px aunque el icono sea más pequeño */
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    color: var(--green);
+  }
+  .social a:hover {
+    background: var(--green);
+    color: var(--black);
+  }
+  svg {
+    width: var(--icon);
+    height: var(--icon);
+    fill: currentColor;
+  }
+  .ra {
+    width: var(--icon);
+    height: var(--icon);
+    display: grid;
+    place-items: center;
+    font-size: 8px;
+    font-stretch: 100%;
+    line-height: 1;
+    border: 2px solid currentColor;
+  }
+</style>

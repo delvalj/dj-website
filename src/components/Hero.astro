@@ -2,8 +2,9 @@
 // Portada: foto o vídeo a todo el ancho con el efecto verde, más el botón del newsletter.
 import Duotone from "./Duotone.astro";
 import HeroMedia from "./HeroMedia.astro";
+import SocialIcons from "./SocialIcons.astro";
 
-const photos = import.meta.glob("/content/photos/hero.{jpg,jpeg,png,webp}");
+const photos = import.meta.glob("/content/photos/hero.{jpg,jpeg,png,webp}", { eager: true });
 const isPlaceholder = Object.keys(photos).length === 0;
 ---
 
@@ -11,6 +12,10 @@ const isPlaceholder = Object.keys(photos).length === 0;
   <Duotone class="hero-frame">
     <HeroMedia />
   </Duotone>
+
+  <!-- Sombra abajo para que los iconos y el botón se lean sobre cualquier foto -->
+  <div class="hero-fade" aria-hidden="true"></div>
+  <SocialIcons class="hero-social" />
 
   {isPlaceholder && <p class="hero-note mono">Placeholder — add content/photos/hero.jpg</p>}
 
@@ -29,6 +34,22 @@ const isPlaceholder = Object.keys(photos).length === 0;
   .hero :global(.hero-frame) {
     position: absolute;
     inset: 0;
+  }
+
+  .hero-fade {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 45%;
+    background: linear-gradient(to top, rgb(0 0 0 / 0.75), transparent);
+    pointer-events: none;
+  }
+
+  /* Iconos: en móvil, justo encima del botón */
+  .hero :global(.hero-social) {
+    position: absolute;
+    left: calc(var(--gutter) - 10px); /* alinea el primer icono con el borde del botón */
+    right: var(--gutter);
+    bottom: calc(24px + 54px + 12px); /* margen inferior + alto del botón + separación */
   }
 
   .hero-note {
@@ -63,6 +84,11 @@ const isPlaceholder = Object.keys(photos).length === 0;
     .hero {
       height: min(calc(100svh - var(--header-h)), 57vw);
       min-height: 420px;
+    }
+    /* Escritorio: iconos abajo a la izquierda, a la altura del botón */
+    .hero :global(.hero-social) {
+      right: auto;
+      bottom: 47px;
     }
     .newsletter {
       left: auto;

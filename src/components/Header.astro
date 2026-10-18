@@ -1,5 +1,6 @@
 ---
 import Logo from "./Logo.astro";
+import SocialIcons from "./SocialIcons.astro";
 
 const left = [
   { label: "Home", href: "#top" },
@@ -34,11 +35,12 @@ const right = [
     </button>
   </nav>
 
-  <!-- Menú a pantalla completa (solo móvil). Los iconos sociales se añaden en la fase 5. -->
+  <!-- Menú a pantalla completa (solo móvil) -->
   <div class="overlay" id="mobile-menu" data-menu hidden>
     <ul class="overlay-links display">
       {[...left, ...right].map((l) => <li><a href={l.href} data-menu-link>{l.label}</a></li>)}
     </ul>
+    <SocialIcons class="overlay-social" />
   </div>
 </header>
 
@@ -121,6 +123,10 @@ const right = [
     font-size: clamp(40px, 13vw, 64px);
     display: grid;
     gap: 16px;
+  }
+  .overlay :global(.overlay-social) {
+    margin-top: 40px;
+    margin-left: -10px; /* alinea el primer icono con el texto */
   }
 
   /* Escritorio: como el boceto, HOME/SHOWS | logo | ABOUT/CONTACT */

@@ -1,19 +1,35 @@
 ---
-// Logo de KAS:ST.
-// Mientras no exista el logo definitivo se muestra el texto "KAS:ST".
-// Para usar el logo real: guarda el archivo como src/assets/logo.svg y listo.
-// Se pinta con el color del texto (verde), así que el SVG debería usar fill="currentColor".
+// Logo de KAS:ST en la cabecera. Usa el primero que exista:
+// 1. src/assets/logo.svg: logo vectorial (el ideal). Debería usar fill="currentColor" para pintarse en verde.
+// 2. src/assets/logo-wordmark.png: el texto "KAS:ST" recortado de logo.png (PNG negro con fondo transparente).
+//    Se usa como máscara: la forma la da el PNG y el color lo pone el CSS (verde), sea cual sea el color del archivo.
+// 3. Si no hay ninguno, el texto "KAS:ST" con la tipografía de títulos.
+import type { ImageMetadata } from "astro";
+
 const svgs = import.meta.glob<string>("../assets/logo.svg", {
   query: "?raw",
   import: "default",
   eager: true,
 });
 const svg = Object.values(svgs)[0];
+
+const pngs = import.meta.glob<ImageMetadata>("../assets/logo-wordmark.png", {
+  import: "default",
+  eager: true,
+});
+const png = Object.values(pngs)[0];
 ---
 
 {
   svg ? (
     <span class="logo logo--svg" role="img" aria-label="KAS:ST" set:html={svg} />
+  ) : png ? (
+    <span
+      class="logo logo--mask"
+      role="img"
+      aria-label="KAS:ST"
+      style={`--logo-url: url(${png.src}); aspect-ratio: ${png.width} / ${png.height}`}
+    />
   ) : (
     <span class="logo logo--text display">KAS:ST</span>
   )
@@ -23,6 +39,7 @@ const svg = Object.values(svgs)[0];
   .logo {
     display: inline-block;
     line-height: 1;
+    vertical-align: middle;
   }
   .logo--text {
     font-size: 28px;
@@ -30,15 +47,22 @@ const svg = Object.values(svgs)[0];
   }
   .logo--svg :global(svg) {
     display: block;
-    height: 28px;
+    height: 26px;
     width: auto;
+  }
+  .logo--mask {
+    height: 26px;
+    background-color: currentColor;
+    -webkit-mask: var(--logo-url) center / contain no-repeat;
+    mask: var(--logo-url) center / contain no-repeat;
   }
   @media (min-width: 768px) {
     .logo--text {
       font-size: 32px;
     }
-    .logo--svg :global(svg) {
-      height: 32px;
+    .logo--svg :global(svg),
+    .logo--mask {
+      height: 30px;
     }
   }
 </style>

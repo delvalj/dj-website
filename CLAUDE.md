@@ -24,7 +24,13 @@ Plan completo y razonamiento: `docs/plan.md`.
 ## Dónde se cambia cada cosa
 - Redes, emails, portada (image|video), newsletter: `src/config/site.ts`.
 - Shows: `src/content/shows.yaml` (esquema validado en `src/content.config.ts`).
-- Logo: componente `Logo`; texto "KAS:ST" provisional → usar `src/assets/logo.svg` cuando exista.
+- Logo: componente `Logo`. Original en `content/design/logokast.png` (PNG 354×347, negro sobre transparente,
+  símbolo arriba + texto KAS:ST abajo), copiado a `src/assets/logo.png`. La cabecera usa solo el texto, recortado
+  en `src/assets/logo-wordmark.png` y teñido de verde con CSS `mask` + `currentColor`. Si se añade
+  `src/assets/logo.svg` (con fill="currentColor"), tiene prioridad: es lo ideal, el PNG es de baja resolución.
+- Redes: URLs en `src/config/site.ts` (`social`); iconos de Simple Icons en `SocialIcons` (footer, menú móvil y
+  portada abajo a la izquierda). Resident Advisor no está en Simple Icons: monograma "RA" en texto.
+  Enlaces en pestaña nueva con `rel="noopener noreferrer"` y `aria-label`.
 - Fotos originales: `content/photos/` (hero.jpg, about.jpg). Si falta hero.jpg se muestra un marcador. Vídeos: `public/media/`.
 
 ## Acceso a /admin (login del artista)
