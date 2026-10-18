@@ -1,0 +1,210 @@
+---
+// Sección NEXT SHOWS. Los datos vienen de src/content/shows.yaml.
+// Se ocultan los shows ya pasados y el próximo se resalta en verde, como en el boceto.
+import { getCollection } from "astro:content";
+
+const DAY = 24 * 60 * 60 * 1000;
+// Un show sigue visible durante todo su día (y la noche siguiente, por si acaba de madrugada).
+const now = Date.now();
+const shows = (await getCollection("shows"))
+  .map((s) => s.data)
+  .filter((s) => s.date.getTime() + DAY > now)
+  .sort((a, b) => a.date.getTime() - b.date.getTime());
+
+const hasSampleData = shows.some((s) => s.placeholder);
+
+// Fechas en inglés, en mayúsculas: "OCTOBER 16". Las fechas del archivo no llevan hora: se leen en UTC.
+const formatDate = (d: Date) =>
+  d.toLocaleDateString("en-US", { month: "long", day: "numeric", timeZone: "UTC" }).toUpperCase();
+
+// Años de la gira para la etiqueta de abajo: "2026" o "2026–27".
+const years = [...new Set(shows.map((s) => s.date.getUTCFullYear()))];
+const yearLabel =
+  years.length === 0
+    ? String(new Date().getFullYear())
+    : years.length === 1
+      ? String(years[0])
+      : `${years[0]}–${String(years[years.length - 1]).slice(-2)}`;
+---
+
+<section id="shows" class="shows">
+  <div class="intro">
+    <h2 class="display">Next<br />Shows</h2>
+    {hasSampleData && <p class="sample mono">Sample data</p>}
+    <p class="tour mono">{yearLabel}<br />Tour dates</p>
+  </div>
+
+  {
+    shows.length === 0 ? (
+      <p class="empty mono">New dates soon</p>
+    ) : (
+      <ol class="list mono">
+        {shows.map((s, i) => (
+          <li class:list={["row", { next: i === 0, sold: s.soldOut }]}>
+            <span class="date">{formatDate(s.date)}</span>
+            <span class="place">
+              <span class="venue">{s.venue}</span>
+              <span class="city">
+                {s.city}, {s.country.toUpperCase()}
+              </span>
+            </span>
+            <span class="tickets">
+              {s.soldOut ? (
+                "Sold out"
+              ) : s.ticketUrl ? (
+                <a
+                  href={s.ticketUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Tickets for ${s.venue}, ${s.city}, ${formatDate(s.date)}`}
+                >
+                  Tickets
+                </a>
+              ) : (
+                "TBA"
+              )}
+            </span>
+          </li>
+        ))}
+      </ol>
+    )
+  }
+</section>
+
+<style>
+  .shows {
+    padding: 40px var(--gutter) 48px;
+    display: grid;
+    gap: 32px;
+  }
+
+  .intro h2 {
+    font-size: clamp(44px, 13vw, 64px);
+  }
+
+  .sample {
+    display: inline-block;
+    margin: 16px 0 0;
+    padding: 4px 8px;
+    border: 1px solid var(--green);
+    font-size: 10px;
+  }
+
+  .tour {
+    display: none; /* en móvil no hace falta; en escritorio va abajo a la izquierda */
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .empty {
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+  }
+
+  /* Móvil: dos líneas por show. Arriba "fecha · TICKETS", abajo "sala — ciudad" */
+  .row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "date tickets"
+      "place place";
+    column-gap: 16px;
+    row-gap: 4px;
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--green-dim);
+  }
+  .date {
+    grid-area: date;
+    font-weight: 700;
+  }
+  .tickets {
+    grid-area: tickets;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .place {
+    grid-area: place;
+  }
+  .venue::after {
+    content: " — ";
+  }
+
+  .tickets a {
+    display: inline-block;
+    padding: 6px 0 6px 12px; /* zona táctil más grande */
+    margin: -6px 0;
+    text-decoration: none;
+  }
+  .tickets a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  /* El próximo show, resaltado en verde */
+  .row.next {
+    background: var(--green);
+    color: var(--black);
+    border-bottom-color: var(--green);
+  }
+
+  .row.sold .tickets {
+    opacity: 0.6;
+  }
+
+  /* Escritorio: como el boceto, título a la izquierda (1/3) y lista a la derecha (2/3) */
+  @media (min-width: 768px) {
+    .shows {
+      grid-template-columns: 1fr 2fr;
+      gap: 24px;
+      padding: 28px var(--gutter) 40px;
+    }
+    .intro {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .intro h2 {
+      font-size: clamp(40px, 5vw, 72px);
+    }
+    .tour {
+      display: block;
+      margin-top: auto; /* empuja la etiqueta al final de la lista */
+      padding-top: 32px;
+    }
+    .list {
+      font-size: 11px;
+    }
+    .row {
+      /* Columnas fijas para que fecha, sala, ciudad y entradas queden alineadas en todas las filas */
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1.15fr) 11ch;
+      column-gap: 16px;
+      align-items: center;
+      min-height: 56px;
+      padding: 0 14px;
+    }
+    .row {
+      grid-template-areas: none;
+    }
+    .place {
+      display: contents; /* sala y ciudad pasan a ser columnas propias */
+    }
+    .date,
+    .tickets {
+      grid-area: auto;
+    }
+    .date {
+      font-weight: 400;
+    }
+    .venue::after {
+      content: none;
+    }
+  }
+</style>

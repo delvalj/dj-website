@@ -1,0 +1,70 @@
+# Lista de shows de KAS:ST.
+# Normalmente se edita desde el panel /admin (fase 7). Si se edita a mano, cada show lleva:
+#   date: AAAA-MM-DD          fecha del show (obligatoria)
+#   venue: nombre de la sala  (obligatorio)
+#   city: ciudad              (obligatoria)
+#   country: código de país de 2 letras, p. ej. ES, US, DE (obligatorio)
+#   ticketUrl: enlace de entradas (opcional; si falta se muestra "TBA")
+#   soldOut: true si están agotadas (opcional)
+#   placeholder: true si es un dato de ejemplo (opcional)
+# El orden da igual: la web los ordena por fecha y oculta sola los que ya han pasado.
+#
+# DATOS DE EJEMPLO – BORRAR antes de publicar.
+# Mientras quede algún show con "placeholder: true", la web muestra la etiqueta "SAMPLE DATA".
+
+shows:
+  # Fecha ya pasada: no debe aparecer en la web (sirve para comprobar que se ocultan solas).
+  - date: 2026-10-10
+    venue: PLACEHOLDER VENUE
+    city: Madrid
+    country: ES
+    ticketUrl: https://example.com/tickets
+    placeholder: true
+  - date: 2026-10-24
+    venue: PLACEHOLDER VENUE
+    city: Barcelona
+    country: ES
+    ticketUrl: https://example.com/tickets
+    placeholder: true
+  - date: 2026-10-31
+    venue: PLACEHOLDER VENUE
+    city: Amsterdam
+    country: NL
+    ticketUrl: https://example.com/tickets
+    soldOut: true
+    placeholder: true
+  - date: 2026-11-07
+    venue: PLACEHOLDER VENUE
+    city: Berlin
+    country: DE
+    ticketUrl: https://example.com/tickets
+    placeholder: true
+  - date: 2026-11-14
+    venue: PLACEHOLDER VENUE
+    city: London
+    country: GB
+    ticketUrl: https://example.com/tickets
+    placeholder: true
+  - date: 2026-11-28
+    venue: PLACEHOLDER VENUE
+    city: Mexico City
+    country: MX
+    placeholder: true
+  - date: 2026-12-12
+    venue: PLACEHOLDER VENUE
+    city: Tulum
+    country: MX
+    ticketUrl: https://example.com/tickets
+    placeholder: true
+  - date: 2026-12-31
+    venue: PLACEHOLDER VENUE
+    city: New York
+    country: US
+    ticketUrl: https://example.com/tickets
+    placeholder: true
+  - date: 2027-01-16
+    venue: PLACEHOLDER VENUE
+    city: Buenos Aires
+    country: AR
+    ticketUrl: https://example.com/tickets
+    placeholder: true
