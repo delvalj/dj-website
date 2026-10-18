@@ -1,0 +1,98 @@
+---
+// Sección CONTACT. Los emails se cambian en src/config/site.ts (contact).
+// Son enlaces mailto: al tocarlos se abre la app de correo.
+import { site } from "../config/site";
+
+const groups = [
+  { label: "Bookings", emails: site.contact.bookings },
+  { label: "Management", emails: site.contact.management },
+];
+---
+
+<section id="contact" class="contact">
+  <h2 class="display">Contact</h2>
+
+  <dl class="list mono">
+    {
+      groups.map((g) => (
+        <div class="row">
+          <dt>{g.label}</dt>
+          <dd>
+            {g.emails.map((email) => (
+              <a href={`mailto:${email}`}>{email}</a>
+            ))}
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+</section>
+
+<style>
+  .contact {
+    border-top: 1px solid var(--green-dim);
+    padding: 40px var(--gutter) 48px;
+    display: grid;
+    gap: 32px;
+  }
+
+  .contact h2 {
+    font-size: clamp(44px, 13vw, 64px);
+  }
+
+  .list {
+    margin: 0;
+    font-size: 12px;
+  }
+
+  .row {
+    display: grid;
+    gap: 8px;
+    padding: 16px 12px;
+    border-bottom: 1px solid var(--green-dim);
+  }
+  .row:first-child {
+    border-top: 1px solid var(--green-dim);
+  }
+
+  dt {
+    font-weight: 700;
+  }
+
+  dd {
+    margin: 0;
+    display: grid;
+    gap: 4px;
+  }
+
+  /* Los emails se muestran en minúsculas (tal y como se escriben) */
+  dd a {
+    text-transform: none;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+    padding: 4px 0;
+  }
+  dd a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  @media (min-width: 768px) {
+    .contact {
+      grid-template-columns: 1fr 2fr;
+      gap: 24px;
+      padding: 40px var(--gutter) 56px;
+    }
+    .contact h2 {
+      font-size: clamp(40px, 5vw, 72px);
+    }
+    .list {
+      font-size: 11px;
+    }
+    .row {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+      align-items: start;
+      padding: 20px 14px;
+    }
+  }
+</style>

@@ -3,12 +3,12 @@ import Logo from "./Logo.astro";
 import SocialIcons from "./SocialIcons.astro";
 
 const left = [
-  { label: "Home", href: "#top" },
-  { label: "Shows", href: "#shows" },
+  { label: "Home", href: "/#top" },
+  { label: "Shows", href: "/#shows" },
 ];
 const right = [
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
+  { label: "About", href: "/#about" },
+  { label: "Contact", href: "/#contact" },
 ];
 ---
 
@@ -18,7 +18,7 @@ const right = [
       {left.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
     </ul>
 
-    <a href="#top" class="home" aria-label="KAS:ST, back to top"><Logo /></a>
+    <a href="/#top" class="home" aria-label="KAS:ST, back to top"><Logo /></a>
 
     <ul class="links links--right display">
       {right.map((l) => <li><a href={l.href}>{l.label}</a></li>)}

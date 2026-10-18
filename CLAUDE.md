@@ -31,7 +31,12 @@ Plan completo y razonamiento: `docs/plan.md`.
 - Redes: URLs en `src/config/site.ts` (`social`); iconos de Simple Icons en `SocialIcons` (footer, menú móvil y
   portada abajo a la izquierda). Resident Advisor no está en Simple Icons: monograma "RA" en texto.
   Enlaces en pestaña nueva con `rel="noopener noreferrer"` y `aria-label`.
-- Fotos originales: `content/photos/` (hero.jpg, about.jpg). Si falta hero.jpg se muestra un marcador. Vídeos: `public/media/`.
+- Fotos: `content/photos/` (hero.jpg, about.jpg), redimensionadas a ~2000–3000 px antes de subirlas a Git.
+  Si falta hero.jpg se muestra un marcador. Vídeos: `public/media/`.
+  Originales pesados: `content/originals/` (ignorada por Git, solo en local).
+- Bio (ABOUT): `src/content/bio.md`. Emails (CONTACT): `src/config/site.ts` (`contact`).
+- Política de privacidad: `src/pages/privacy.astro`. Falta el responsable de los datos (`site.privacy`, con TODO);
+  mientras falte, la página muestra "DRAFT". Completar y revisar antes de activar el newsletter.
 
 ## Acceso a /admin (login del artista)
 Sveltia CMS con backend GitHub; Netlify hace de intermediario OAuth. NO usar Netlify Identity ni Git Gateway

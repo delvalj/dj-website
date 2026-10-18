@@ -1,0 +1,5 @@
+KAS:ST has carved out a distinct place in electronic music, blending atmospheric soundscapes, intricate melodies and powerful rhythms with a striking audiovisual identity. A free spirit guided by emotion, he moves instinctively between genres, allowing each track to express its own mood and story.
+
+His discography includes collaborations with ARTBAT, Gordo and Moby, releases on Afterlife, Cercle, Upperground and his own imprint Flyance Records, alongside official remixes of his work by Tale Of Us, Anyma, Mind Against, Chris Avantgarde and Kevin de Vries. In 2025, he released ADORE, one of his most personal projects to date, revealing the breadth of his musical vision through twelve tracks. More recently, he brought his own emotional touch to Push's iconic "Strange World" with an official remix on Armada Music.
+
+Having performed at some of the world's most prestigious venues and festivals, KAS:ST has connected with audiences across the globe. Across his productions and DJ sets, emotion remains the driving force: a constant thread through a sound that continues to evolve.

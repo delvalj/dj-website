@@ -3,3 +3,6 @@ dist/
 .astro/
 .env
 .DS_Store
+
+# Originales pesados: se quedan solo en el ordenador, no se suben a Git
+content/originals/

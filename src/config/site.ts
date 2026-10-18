@@ -33,6 +33,13 @@ export const site = {
     residentAdvisor: "https://ra.co/", // TODO: poner el perfil real (ahora: página principal)
   },
 
+  // Responsable de los datos personales (aparece en /privacy). Obligatorio antes de activar el newsletter.
+  privacy: {
+    controller: "[CONTROLLER NAME OR COMPANY]", // TODO: nombre o empresa responsable
+    email: "[PRIVACY CONTACT EMAIL]", // TODO: email para ejercer derechos RGPD
+    updated: "2026-10-18", // fecha de la última revisión del texto
+  },
+
   // Adónde se envían las altas. "netlify" = Netlify Forms (temporal).
   newsletter: { provider: "netlify" },
 } as const;

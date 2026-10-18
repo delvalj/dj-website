@@ -1,5 +1,5 @@
 ---
-// Pie de página. El enlace a Privacy se añade en la fase 5, junto con la página /privacy.
+// Pie de página: iconos de redes, © y enlace a la política de privacidad.
 import SocialIcons from "./SocialIcons.astro";
 import { site } from "../config/site";
 
@@ -8,7 +8,7 @@ const year = new Date().getFullYear();
 
 <footer class="footer">
   <SocialIcons />
-  <p class="mono">© {year} {site.name}</p>
+  <p class="mono">© {year} {site.name} · <a href="/privacy">Privacy</a></p>
 </footer>
 
 <style>

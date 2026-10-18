@@ -1,0 +1,115 @@
+---
+// Política de privacidad. TEXTO PROVISIONAL: falta el responsable de los datos (src/config/site.ts → privacy)
+// y conviene que lo revise un profesional antes de activar el newsletter.
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { site } from "../config/site";
+
+const { controller, email, updated } = site.privacy;
+const isDraft = controller.startsWith("[") || email.startsWith("[");
+const updatedLabel = new Date(updated).toLocaleDateString("en-GB", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC",
+});
+---
+
+<Base title={`Privacy Policy — ${site.name}`}>
+  <Header />
+  <main class="privacy">
+    <h1 class="display">Privacy<br />Policy</h1>
+
+    {isDraft && <p class="draft mono">Draft — pending controller details</p>}
+
+    <div class="text">
+      <p class="mono updated">Last updated: {updatedLabel}</p>
+
+      <h2 class="mono">Who we are</h2>
+      <p>
+        This website is the official site of {site.name}. The data controller responsible for your personal data is{" "}
+        {controller}. You can contact us about privacy at <a href={`mailto:${email}`}>{email}</a>.
+      </p>
+
+      <h2 class="mono">What we collect</h2>
+      <p>
+        If you sign up for the newsletter, we collect your name and email address. We only collect this data when you
+        submit the form and tick the consent box.
+      </p>
+
+      <h2 class="mono">Why we use it</h2>
+      <p>
+        We use your data only to send you news about {site.name}: new shows, releases and related updates. The legal
+        basis is your consent, which you can withdraw at any time.
+      </p>
+
+      <h2 class="mono">Who processes it</h2>
+      <p>
+        Your data is stored by our newsletter and hosting providers, who process it on our behalf. We do not sell your
+        data or share it for advertising.
+      </p>
+
+      <h2 class="mono">How long we keep it</h2>
+      <p>We keep your data until you unsubscribe or ask us to delete it.</p>
+
+      <h2 class="mono">Your rights</h2>
+      <p>
+        You can access, correct or delete your data, object to or restrict its use, and ask for a copy of it. Every
+        email includes an unsubscribe link. To exercise your rights, write to{" "}
+        <a href={`mailto:${email}`}>{email}</a>. You can also complain to your local data protection authority.
+      </p>
+
+      <h2 class="mono">Cookies</h2>
+      <p>This website does not use tracking or advertising cookies.</p>
+    </div>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .privacy {
+    padding: 40px var(--gutter) 64px;
+    display: grid;
+    gap: 24px;
+  }
+  .privacy h1 {
+    font-size: clamp(44px, 13vw, 72px);
+  }
+  .draft {
+    justify-self: start;
+    margin: 0;
+    padding: 4px 8px;
+    border: 1px solid var(--green);
+    font-size: 10px;
+  }
+  .text {
+    max-width: 62ch;
+    font-family: var(--font-display);
+    font-stretch: 100%;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .text h2 {
+    margin: 2em 0 0.5em;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .text p {
+    margin: 0 0 1em;
+  }
+  .updated {
+    font-size: 11px;
+  }
+  @media (min-width: 768px) {
+    .privacy {
+      grid-template-columns: 1fr 2fr;
+      align-items: start;
+      padding: 56px var(--gutter) 80px;
+    }
+    .privacy h1 {
+      grid-row: span 2;
+      font-size: clamp(40px, 5vw, 72px);
+    }
+  }
+</style>
