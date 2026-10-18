@@ -1,0 +1,44 @@
+---
+// Logo de KAS:ST.
+// Mientras no exista el logo definitivo se muestra el texto "KAS:ST".
+// Para usar el logo real: guarda el archivo como src/assets/logo.svg y listo.
+// Se pinta con el color del texto (verde), así que el SVG debería usar fill="currentColor".
+const svgs = import.meta.glob<string>("../assets/logo.svg", {
+  query: "?raw",
+  import: "default",
+  eager: true,
+});
+const svg = Object.values(svgs)[0];
+---
+
+{
+  svg ? (
+    <span class="logo logo--svg" role="img" aria-label="KAS:ST" set:html={svg} />
+  ) : (
+    <span class="logo logo--text display">KAS:ST</span>
+  )
+}
+
+<style>
+  .logo {
+    display: inline-block;
+    line-height: 1;
+  }
+  .logo--text {
+    font-size: 28px;
+    letter-spacing: -0.01em;
+  }
+  .logo--svg :global(svg) {
+    display: block;
+    height: 28px;
+    width: auto;
+  }
+  @media (min-width: 768px) {
+    .logo--text {
+      font-size: 32px;
+    }
+    .logo--svg :global(svg) {
+      height: 32px;
+    }
+  }
+</style>

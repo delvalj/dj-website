@@ -1,0 +1,90 @@
+/* Estilos base de toda la web. El color y las tipografías se cambian aquí, en un solo sitio. */
+@import "@fontsource-variable/archivo/wdth.css";
+@import "@fontsource/space-mono/400.css";
+@import "@fontsource/space-mono/700.css";
+
+:root {
+  /* Color: un único verde (medido en el boceto) sobre negro */
+  --black: #000;
+  --green: #02f233;
+  --green-dim: #1f4128; /* líneas finas entre filas */
+
+  /* Tipografías */
+  --font-display: "Archivo Variable", "Arial Black", sans-serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+
+  /* Espaciados */
+  --gutter: 16px; /* margen lateral en móvil */
+  --header-h: 56px;
+  --tracking: 0.08em; /* espacio entre letras en textos mono */
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: 32px;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  border-radius: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--header-h); /* que la cabecera fija no tape los títulos */
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--black);
+  color: var(--green);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* Títulos grandes: Archivo expandida (125%) y Black (900) */
+.display {
+  font-family: var(--font-display);
+  font-stretch: 125%;
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.9;
+  margin: 0;
+}
+
+/* Textos pequeños de interfaz: mono, mayúsculas y con espacio entre letras */
+.mono {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking);
+}
+
+:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}
