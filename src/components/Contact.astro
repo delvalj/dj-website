@@ -1,8 +1,8 @@
 ---
 // Sección CONTACT. Los emails se cambian en src/config/site.ts (contact).
 // Son enlaces mailto: al tocarlos se abre la app de correo.
-// Sección baja: en escritorio, CONTACT a la izquierda y los emails a la derecha, en la columna de la lista
-// de NEXT SHOWS y a la altura del título. En móvil, los emails van debajo del título.
+// Sección baja: en escritorio, CONTACT a la izquierda y los emails a la derecha, alineados con el texto
+// de ABOUT (misma rejilla que About.astro) y a la altura del título. En móvil, los emails van debajo del título.
 import { site } from "../config/site";
 
 const groups = [
@@ -15,20 +15,22 @@ const groups = [
   <h2 class="display">Contact</h2>
 
   <div class="info mono">
-    {
-      groups.map((g) => (
-        <div class="group">
-          <h3>{g.label}</h3>
-          <ul>
-            {g.emails.map((email) => (
-              <li>
-                <a href={`mailto:${email}`}>{email}</a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))
-    }
+    <div class="groups">
+      {
+        groups.map((g) => (
+          <div class="group">
+            <h3>{g.label}</h3>
+            <ul>
+              {g.emails.map((email) => (
+                <li>
+                  <a href={`mailto:${email}`}>{email}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
   </div>
 </section>
 
@@ -43,7 +45,7 @@ const groups = [
     font-size: clamp(44px, 13vw, 64px); /* igual que NEXT SHOWS */
   }
 
-  .info {
+  .groups {
     display: grid;
     gap: 16px; /* algo más de aire entre BOOKINGS y MANAGEMENT */
     font-size: 11px;
@@ -93,14 +95,21 @@ const groups = [
     .contact h2 {
       font-size: var(--title-size);
     }
-    /* BOOKINGS y MANAGEMENT uno al lado del otro, empezando donde empieza el texto de los shows */
+    /* Mismas columnas que ABOUT (foto | bio): los emails empiezan donde empieza el texto de la bio.
+       Si se cambian las columnas de .body en About.astro, cambiarlas también aquí. */
     .info {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+      column-gap: 32px;
+      font-size: clamp(12px, 0.9vw, 13px);
+    }
+    /* BOOKINGS y MANAGEMENT uno al lado del otro (uno debajo de otro si no caben) */
+    .groups {
+      grid-column: 2;
       display: flex;
       flex-wrap: wrap;
       column-gap: 64px;
       row-gap: 16px;
-      padding-left: 14px;
-      font-size: clamp(12px, 0.9vw, 13px);
     }
   }
 </style>
