@@ -44,12 +44,12 @@ shows:
     city: London
     country: GB
     ticketUrl: https://example.com/tickets
-    soldOut: true
     placeholder: true
   - date: 2026-11-28
     venue: PLACEHOLDER VENUE
     city: Mexico City
     country: MX
+    ticketUrl: https://example.com/tickets
     placeholder: true
   - date: 2026-12-12
     venue: PLACEHOLDER VENUE
