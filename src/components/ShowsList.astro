@@ -139,6 +139,7 @@ const rows = shows.map((s, i) => {
   /* Móvil: dos líneas por show. Arriba "fecha · TICKETS", abajo "sala — ciudad" */
   .row {
     position: relative; /* el relleno verde se coloca respecto a la fila */
+    isolation: isolate; /* el relleno queda dentro de la fila, detrás del texto y del foco */
     display: grid;
     grid-template-columns: 1fr auto;
     grid-template-areas:
@@ -185,6 +186,7 @@ const rows = shows.map((s, i) => {
     transform-origin: top; /* al salir, se recoge hacia arriba */
     transition: transform 1.2s var(--ease);
     pointer-events: none;
+    z-index: -1; /* detrás del texto y del recuadro de foco */
   }
 
   /* Flecha que rueda: una ventana de una línea de alto con dos flechas, una encima de otra */
@@ -200,14 +202,26 @@ const rows = shows.map((s, i) => {
     transition: transform 1s var(--ease);
   }
 
-  /* El próximo show, resaltado en verde (sin relleno: ya lo está) */
+  /* El próximo show, resaltado en verde */
   .row.next {
     background: var(--green);
     color: var(--black);
     border-bottom-color: var(--green);
   }
+  /* Mismo efecto, pero al revés: sube un relleno negro y el texto pasa a verde */
   .row.next .fill {
-    display: none;
+    background: var(--black);
+  }
+
+  @media (hover: hover) {
+    .row.next.link:hover {
+      color: var(--green);
+    }
+  }
+
+  .row.next.link:focus-visible {
+    color: var(--green);
+    outline-color: var(--green);
   }
 
   /* Sin entradas (sold out o TBA): sin enlace ni efecto, con menos intensidad */
