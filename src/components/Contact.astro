@@ -1,7 +1,8 @@
 ---
 // Sección CONTACT. Los emails se cambian en src/config/site.ts (contact).
 // Son enlaces mailto: al tocarlos se abre la app de correo.
-// Bloque compacto: su ancho lo marca la palabra CONTACT y nada puede ser más ancho que ella.
+// Sección baja: en escritorio, CONTACT a la izquierda y los emails a la derecha, en la columna de la lista
+// de NEXT SHOWS y a la altura del título. En móvil, los emails van debajo del título.
 import { site } from "../config/site";
 
 const groups = [
@@ -11,53 +12,42 @@ const groups = [
 ---
 
 <section id="contact" class="contact">
-  <div class="block">
-    <h2 class="display">Contact</h2>
+  <h2 class="display">Contact</h2>
 
-    <div class="info mono">
-      {
-        groups.map((g) => (
-          <div class="group">
-            <h3>{g.label}</h3>
-            <ul>
-              {g.emails.map((email) => (
-                <li>
-                  <a href={`mailto:${email}`}>{email}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))
-      }
-    </div>
+  <div class="info mono">
+    {
+      groups.map((g) => (
+        <div class="group">
+          <h3>{g.label}</h3>
+          <ul>
+            {g.emails.map((email) => (
+              <li>
+                <a href={`mailto:${email}`}>{email}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
   </div>
 </section>
 
 <style>
   .contact {
-    /* Mucho aire arriba y abajo, pero sección baja */
-    padding: 88px var(--gutter);
-  }
-
-  /* El bloque mide lo que mide la palabra CONTACT */
-  .block {
-    width: fit-content;
+    padding: 56px var(--gutter);
+    display: grid;
+    gap: 16px;
   }
 
   .contact h2 {
     font-size: clamp(44px, 13vw, 64px); /* igual que NEXT SHOWS */
   }
 
-  /* width 0 + min-width 100%: el texto de debajo no puede ensanchar el bloque */
   .info {
-    width: 0;
-    min-width: 100%;
-    margin-top: 16px;
     display: grid;
     gap: 16px; /* algo más de aire entre BOOKINGS y MANAGEMENT */
     font-size: 11px;
     line-height: 1.6;
-    white-space: nowrap;
   }
 
   .info h3 {
@@ -74,6 +64,7 @@ const groups = [
   /* Emails en minúsculas, tal y como se escriben */
   .info a {
     text-transform: none;
+    overflow-wrap: anywhere;
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 3px;
@@ -91,14 +82,24 @@ const groups = [
     }
   }
 
+  /* Escritorio: misma rejilla que NEXT SHOWS (título 1/3, contenido 2/3) */
   @media (min-width: 768px) {
     .contact {
-      padding: 128px var(--gutter);
+      grid-template-columns: 1fr 2fr;
+      gap: 12px;
+      align-items: center; /* emails a la altura del título */
+      padding: 64px var(--gutter);
     }
     .contact h2 {
-      font-size: var(--title-size); /* igual que NEXT SHOWS en escritorio */
+      font-size: var(--title-size);
     }
+    /* BOOKINGS y MANAGEMENT uno al lado del otro, empezando donde empieza el texto de los shows */
     .info {
+      display: flex;
+      flex-wrap: wrap;
+      column-gap: 64px;
+      row-gap: 16px;
+      padding-left: 14px;
       font-size: clamp(12px, 0.9vw, 13px);
     }
   }
