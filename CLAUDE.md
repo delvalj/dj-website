@@ -37,8 +37,8 @@ Plan completo y razonamiento: `docs/plan.md`.
   Alto: 26 px en móvil, 25 px en escritorio. Si se reemplaza, repetir esos dos pasos.
   Versiones PNG antiguas (respaldo, no se usan mientras exista el SVG): `src/assets/logo-wordmark.png` y
   `src/assets/logo.png` (símbolo + texto, de `content/design/logokast.png`).
-- Redes: URLs en `src/config/site.ts` (`social`); iconos de Simple Icons en `SocialIcons` (footer, menú móvil y
-  portada abajo a la izquierda). Resident Advisor no está en Simple Icons: monograma "RA" en texto.
+- Redes: URLs en `src/config/site.ts` (`social`); iconos de Simple Icons en `SocialIcons`, solo en el footer.
+  Resident Advisor no está en Simple Icons: monograma "RA" en texto.
   Enlaces en pestaña nueva con `rel="noopener noreferrer"` y `aria-label`.
 - Fotos: `content/photos/` (hero.jpg|png|webp, about.jpg), redimensionadas a ~2000–3000 px antes de subirlas a Git.
   Si falta la de portada se muestra un marcador. Ahora la portada es `hero.png` (720×900, vertical; provisional:
