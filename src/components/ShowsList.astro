@@ -1,6 +1,8 @@
 ---
 // Sección NEXT SHOWS. Los datos vienen de src/content/shows.yaml.
 // Se ocultan los shows ya pasados y el próximo se resalta en verde, como en el boceto.
+// Cada fila con entradas es un único enlace (toda la fila se puede tocar). Efecto al pasar el ratón:
+// un relleno verde sube desde abajo, el texto pasa a negro, la fecha y TICKETS se acercan y la flecha "rueda".
 import { getCollection } from "astro:content";
 
 const DAY = 24 * 60 * 60 * 1000;
@@ -25,6 +27,20 @@ const yearLabel =
     : years.length === 1
       ? String(years[0])
       : `${years[0]}–${String(years[years.length - 1]).slice(-2)}`;
+
+// Solo es enlace si hay entradas a la venta: ni "sold out" ni sin enlace ("TBA").
+const rows = shows.map((s, i) => {
+  const date = formatDate(s.date);
+  const place = `${s.venue}, ${s.city}, ${s.country.toUpperCase()}`;
+  return {
+    ...s,
+    date,
+    next: i === 0,
+    href: !s.soldOut && s.ticketUrl ? s.ticketUrl : undefined,
+    status: s.soldOut ? "Sold out" : s.ticketUrl ? "Tickets" : "TBA",
+    label: `Tickets for ${date}, ${place} (opens in a new tab)`,
+  };
+});
 ---
 
 <section id="shows" class="shows">
@@ -35,37 +51,44 @@ const yearLabel =
   </div>
 
   {
-    shows.length === 0 ? (
+    rows.length === 0 ? (
       <p class="empty mono">New dates soon</p>
     ) : (
       <ol class="list mono">
-        {shows.map((s, i) => (
-          <li class:list={["row", { next: i === 0, sold: s.soldOut }]}>
-            <span class="date">{formatDate(s.date)}</span>
-            <span class="place">
-              <span class="venue">{s.venue}</span>
-              <span class="city">
-                {s.city}, {s.country.toUpperCase()}
-              </span>
-            </span>
-            <span class="tickets">
-              {s.soldOut ? (
-                "Sold out"
-              ) : s.ticketUrl ? (
-                <a
-                  href={s.ticketUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Tickets for ${s.venue}, ${s.city}, ${formatDate(s.date)}`}
-                >
-                  Tickets
-                </a>
-              ) : (
-                "TBA"
-              )}
-            </span>
-          </li>
-        ))}
+        {rows.map((s) => {
+          // Fila con entradas = <a>; sin entradas = <div> (no clicable, sin efecto)
+          const Row = s.href ? "a" : "div";
+          return (
+            <li>
+              <Row
+                class:list={["row", { next: s.next, link: s.href, off: !s.href }]}
+                href={s.href}
+                target={s.href && "_blank"}
+                rel={s.href && "noopener noreferrer"}
+                aria-label={s.href && s.label}
+              >
+                <span class="fill" aria-hidden="true" />
+                <span class="date">{s.date}</span>
+                <span class="place">
+                  <span class="venue">{s.venue}</span>
+                  <span class="city">
+                    {s.city}, {s.country.toUpperCase()}
+                  </span>
+                </span>
+                <span class="tickets">
+                  {s.status}
+                  {s.href && (
+                    // Dos flechas apiladas: al pasar el ratón la primera sale por arriba y entra la segunda
+                    <span class="arrow" aria-hidden="true">
+                      <span>→</span>
+                      <span>→</span>
+                    </span>
+                  )}
+                </span>
+              </Row>
+            </li>
+          );
+        })}
       </ol>
     )
   }
@@ -73,6 +96,8 @@ const yearLabel =
 
 <style>
   .shows {
+    /* Curva del efecto: arranca rápido y frena suave */
+    --ease: cubic-bezier(0.19, 1, 0.22, 1);
     padding: 40px var(--gutter) 48px;
     display: grid;
     gap: 32px;
@@ -109,24 +134,32 @@ const yearLabel =
     font-size: 12px;
   }
 
+  /* ---------- Fila ---------- */
+
   /* Móvil: dos líneas por show. Arriba "fecha · TICKETS", abajo "sala — ciudad" */
   .row {
+    position: relative; /* el relleno verde se coloca respecto a la fila */
     display: grid;
     grid-template-columns: 1fr auto;
     grid-template-areas:
       "date tickets"
       "place place";
+    align-content: center;
     column-gap: 16px;
     row-gap: 4px;
+    min-height: 48px; /* zona táctil mínima */
     padding: 14px 12px;
     border-bottom: 1px solid var(--green-dim);
+    text-decoration: none;
+    color: var(--green);
+    transition: color 0.3s;
   }
   .date {
     grid-area: date;
   }
   .tickets {
     grid-area: tickets;
-    text-align: right;
+    justify-self: end;
     white-space: nowrap;
   }
   .place {
@@ -136,29 +169,125 @@ const yearLabel =
     content: " — ";
   }
 
-  .tickets a {
-    display: inline-block;
-    padding: 6px 0 6px 12px; /* zona táctil más grande */
-    margin: -6px 0;
-    text-decoration: none;
-  }
-  .tickets a:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
+  /* El texto va por encima del relleno verde */
+  .date,
+  .place,
+  .tickets {
+    position: relative;
   }
 
-  /* El próximo show, resaltado en verde */
+  /* Relleno verde: invisible (altura 0) hasta el hover. Tapa también la línea de debajo. */
+  .fill {
+    position: absolute;
+    inset: 0 0 -1px 0;
+    background: var(--green);
+    transform: scaleY(0);
+    transform-origin: top; /* al salir, se recoge hacia arriba */
+    transition: transform 1.2s var(--ease);
+    pointer-events: none;
+  }
+
+  /* Flecha que rueda: una ventana de una línea de alto con dos flechas, una encima de otra */
+  .arrow {
+    display: inline-flex;
+    flex-direction: column;
+    height: 1lh;
+    overflow: hidden;
+    margin-left: 0.5em;
+    vertical-align: bottom;
+  }
+  .arrow span {
+    transition: transform 1s var(--ease);
+  }
+
+  /* El próximo show, resaltado en verde (sin relleno: ya lo está) */
   .row.next {
     background: var(--green);
     color: var(--black);
     border-bottom-color: var(--green);
   }
+  .row.next .fill {
+    display: none;
+  }
 
-  .row.sold .tickets {
+  /* Sin entradas (sold out o TBA): sin enlace ni efecto, con menos intensidad */
+  .row.off .tickets {
     opacity: 0.6;
   }
 
-  /* Escritorio: como el boceto, título a la izquierda (1/3) y lista a la derecha (2/3) */
+  /* El foco de teclado se dibuja por dentro, para no tapar las filas vecinas */
+  .row.link:focus-visible {
+    outline: 2px solid var(--black);
+    outline-offset: -4px;
+  }
+
+  /* ---------- Hover (solo con ratón real) y foco de teclado ---------- */
+
+  @media (hover: hover) {
+    .row.link:hover {
+      color: var(--black);
+    }
+    .row.link:hover .fill {
+      transform: scaleY(1);
+      transform-origin: bottom; /* al entrar, sube desde abajo */
+    }
+    .row.link:hover .date {
+      transform: translateX(20px);
+    }
+    .row.link:hover .tickets {
+      transform: translateX(-20px);
+    }
+    .row.link:hover .arrow span {
+      transform: translateY(-100%);
+      transition-delay: 0.25s;
+    }
+  }
+  .row.link:focus-visible {
+    color: var(--black);
+  }
+  .row.link:focus-visible .fill {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  .row.link:focus-visible .date {
+    transform: translateX(20px);
+  }
+  .row.link:focus-visible .tickets {
+    transform: translateX(-20px);
+  }
+  .row.link:focus-visible .arrow span {
+    transform: translateY(-100%);
+    transition-delay: 0.25s;
+  }
+
+  .date,
+  .tickets {
+    transition: transform 1.2s var(--ease);
+  }
+
+  /* Quien pide "reducir movimiento": sin barrido ni desplazamientos, solo cambia el color */
+  @media (prefers-reduced-motion: reduce) {
+    .fill {
+      transform: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .row.link:hover .fill,
+    .row.link:focus-visible .fill {
+      transform: none;
+      opacity: 1;
+    }
+    .row .date,
+    .row .tickets,
+    .row .arrow span {
+      transform: none !important;
+      transition: none;
+    }
+  }
+
+  /* ---------- Escritorio ---------- */
+
+  /* Como el boceto: título a la izquierda (1/3) y lista a la derecha (2/3) */
   @media (min-width: 768px) {
     .shows {
       grid-template-columns: 1fr 2fr;
@@ -182,34 +311,26 @@ const yearLabel =
       font-size: 11px;
     }
     .row {
-      /* Columnas proporcionales (medidas en el boceto) para que todo quede alineado en todas las filas */
-      grid-template-columns: minmax(0, 146fr) minmax(0, 143fr) minmax(0, 211fr) minmax(0, 64fr);
+      /* 4 columnas proporcionales (medidas en el boceto), iguales en todas las filas */
+      grid-template-columns: minmax(0, 146fr) minmax(0, 143fr) minmax(0, 211fr) 12ch; /* TICKETS → cabe entero */
       grid-template-areas: none;
-      column-gap: 12px; /* que una sala de nombre largo no se pegue a la ciudad */
-      align-items: end;
-      min-height: 56px;
-      /* La línea de cada fila empieza donde empieza el texto; solo el resaltado verde sobresale */
-      margin-left: 14px;
-      padding: 0 14px 12px 0;
-    }
-    .row.next {
       align-items: center;
-      min-height: 40px;
-      margin-left: 0;
-      padding: 0 14px;
-    }
-    .tickets {
-      text-align: left;
-    }
-    .tickets a {
-      padding: 6px 12px 6px 0;
+      gap: 20px;
+      padding: 25px 14px;
     }
     .place {
       display: contents; /* sala y ciudad pasan a ser columnas propias */
     }
+    .venue,
+    .city {
+      position: relative;
+    }
     .date,
     .tickets {
       grid-area: auto;
+    }
+    .tickets {
+      justify-self: start;
     }
     .venue::after {
       content: none;

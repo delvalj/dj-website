@@ -44,6 +44,7 @@ shows:
     city: London
     country: GB
     ticketUrl: https://example.com/tickets
+    soldOut: true
     placeholder: true
   - date: 2026-11-28
     venue: PLACEHOLDER VENUE
