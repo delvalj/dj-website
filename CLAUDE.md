@@ -16,7 +16,14 @@ Plan completo y razonamiento: `docs/plan.md`.
 
 ## Diseño
 - Fondo #000, un único verde neón (variable `--green` = #02F233, medido en el boceto). Sin otros colores.
-- Títulos: Archivo expandida y Black, en mayúsculas. Lista/UI: monoespaciada (Space Mono), mayúsculas, con espacio entre letras.
+- Títulos: KASST Headline Black (fuente propia), en mayúsculas. Lista, UI y textos largos: DM Mono Medium
+  (mayúsculas con espacio entre letras en la UI; la bio en minúsculas). Solo existen esos dos grosores:
+  `font-synthesis: none`, no usar `font-weight: 700`.
+- Fuentes servidas desde el propio sitio (`public/fonts/`, `@font-face` en `src/styles/global.css`,
+  `font-display: swap`, precargadas en `Base.astro`). Originales en `content/fonts/`.
+  - KASST Headline (© Ignacio Casco): su licencia prohíbe modificar el archivo sin permiso escrito, así que se
+    sirve el `.otf` original (50 KB) sin convertir ni recortar. Con permiso, pasarlo a woff2 (≈18 KB).
+  - DM Mono (licencia libre OFL): convertida a woff2 (21 KB).
 - Sin bordes redondeados. Referencia: content/design/home-mockup.png.
 - Fotos y vídeo: duotono negro→verde→verde pálido + grano, hecho en CSS (grayscale + mix-blend-mode, ruido SVG feTurbulence).
   Nunca integrar el efecto en los archivos de imagen.
@@ -24,15 +31,18 @@ Plan completo y razonamiento: `docs/plan.md`.
 ## Dónde se cambia cada cosa
 - Redes, emails, portada (image|video), newsletter: `src/config/site.ts`.
 - Shows: `src/content/shows.yaml` (esquema validado en `src/content.config.ts`).
-- Logo: componente `Logo`. Original en `content/design/logokast.png` (PNG 354×347, negro sobre transparente,
-  símbolo arriba + texto KAS:ST abajo), copiado a `src/assets/logo.png`. La cabecera usa solo el texto, recortado
-  en `src/assets/logo-wordmark.png` y teñido de verde con CSS `mask` + `currentColor`. Si se añade
-  `src/assets/logo.svg` (con fill="currentColor"), tiene prioridad: es lo ideal, el PNG es de baja resolución.
+- Logo: componente `Logo`. Definitivo: `src/assets/logo.svg` (solo el texto KAS:ST, vectorial), sacado de
+  `content/design/logo_header.svg` (export de Illustrator): se quitó su color fijo (#00f132) para usar
+  `fill="currentColor"` (pinta con `--green`) y se ajustó el `viewBox` al dibujo (el original tenía mucho margen).
+  Alto: 26 px en móvil, 25 px en escritorio. Si se reemplaza, repetir esos dos pasos.
+  Versiones PNG antiguas (respaldo, no se usan mientras exista el SVG): `src/assets/logo-wordmark.png` y
+  `src/assets/logo.png` (símbolo + texto, de `content/design/logokast.png`).
 - Redes: URLs en `src/config/site.ts` (`social`); iconos de Simple Icons en `SocialIcons` (footer, menú móvil y
   portada abajo a la izquierda). Resident Advisor no está en Simple Icons: monograma "RA" en texto.
   Enlaces en pestaña nueva con `rel="noopener noreferrer"` y `aria-label`.
-- Fotos: `content/photos/` (hero.jpg, about.jpg), redimensionadas a ~2000–3000 px antes de subirlas a Git.
-  Si falta hero.jpg se muestra un marcador. Vídeos: `public/media/`.
+- Fotos: `content/photos/` (hero.jpg|png|webp, about.jpg), redimensionadas a ~2000–3000 px antes de subirlas a Git.
+  Si falta la de portada se muestra un marcador. Ahora la portada es `hero.png` (720×900, vertical; provisional:
+  escasa para escritorio). Intensidad del efecto verde: variables `--duo-*` en `Duotone.astro`. Vídeos: `public/media/`.
   Originales pesados: `content/originals/` (ignorada por Git, solo en local).
 - Bio (ABOUT): `src/content/bio.md`. Emails (CONTACT): `src/config/site.ts` (`contact`).
 - Política de privacidad: `src/pages/privacy.astro`. Falta el responsable de los datos (`site.privacy`, con TODO);

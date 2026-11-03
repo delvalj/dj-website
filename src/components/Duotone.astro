@@ -21,7 +21,8 @@ const { class: className } = Astro.props;
   .duotone {
     --duo-contrast: 1.35;
     --duo-brightness: 1.05;
-    --duo-grain: 0.45;
+    --duo-tint: 0.6; /* menos de 1 = luces más pálidas (verde menta casi blanco), como en el boceto */
+    --duo-grain: 0.55;
 
     position: relative;
     overflow: hidden;
@@ -46,6 +47,7 @@ const { class: className } = Astro.props;
   .duo-tint {
     background: var(--green);
     mix-blend-mode: color;
+    opacity: var(--duo-tint);
   }
 
   .duo-grain {

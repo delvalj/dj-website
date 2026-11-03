@@ -63,12 +63,9 @@ const photo = Object.values(photos)[0];
     object-position: 50% 30%;
   }
 
-  /* Texto largo: Archivo en su anchura normal, más fácil de leer que la mono en párrafos */
+  /* Texto largo: DM Mono en minúsculas (la fuente de títulos solo sirve para mayúsculas grandes) */
   .bio {
-    font-family: var(--font-display);
-    font-stretch: 100%;
-    font-weight: 400;
-    font-size: 16px;
+    font-size: 15px;
     line-height: 1.6;
     max-width: 62ch;
   }
@@ -83,11 +80,11 @@ const photo = Object.values(photos)[0];
   @media (min-width: 768px) {
     .about {
       grid-template-columns: 1fr 2fr;
-      gap: 24px;
+      gap: 12px; /* mismas columnas que NEXT SHOWS */
       padding: 40px var(--gutter) 56px;
     }
     .about h2 {
-      font-size: clamp(40px, 5vw, 72px);
+      font-size: var(--title-size);
     }
     .body {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);

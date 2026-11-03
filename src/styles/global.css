@@ -1,7 +1,24 @@
 /* Estilos base de toda la web. El color y las tipografías se cambian aquí, en un solo sitio. */
-@import "@fontsource-variable/archivo/wdth.css";
-@import "@fontsource/space-mono/400.css";
-@import "@fontsource/space-mono/700.css";
+
+/* Tipografías, servidas desde la propia web (public/fonts/). Originales en content/fonts/.
+   font-display: swap = el texto se ve enseguida con una fuente de respaldo y cambia al cargar la buena. */
+@font-face {
+  /* Fuente propia de KAS:ST (Ignacio Casco). Su licencia no permite modificar el archivo sin permiso:
+     por eso se sirve el .otf original, sin convertir a woff2 ni recortar. */
+  font-family: "KASST Headline";
+  src: url("/fonts/KASST-Headline-Blk.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  /* DM Mono (licencia libre OFL), convertida a woff2 */
+  font-family: "DM Mono";
+  src: url("/fonts/DMMono-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   /* Color: un único verde (medido en el boceto) sobre negro */
@@ -10,8 +27,8 @@
   --green-dim: #1f4128; /* líneas finas entre filas */
 
   /* Tipografías */
-  --font-display: "Archivo Variable", "Arial Black", sans-serif;
-  --font-mono: "Space Mono", ui-monospace, monospace;
+  --font-display: "KASST Headline", "Arial Black", sans-serif;
+  --font-mono: "DM Mono", ui-monospace, monospace;
 
   /* Espaciados */
   --gutter: 16px; /* margen lateral en móvil */
@@ -22,6 +39,8 @@
 @media (min-width: 768px) {
   :root {
     --gutter: 32px;
+    --header-h: 48px;
+    --title-size: clamp(36px, 4.2vw, 72px); /* títulos de sección en escritorio (40 px a 960 px de ancho) */
   }
 }
 
@@ -49,8 +68,10 @@ body {
   background: var(--black);
   color: var(--green);
   font-family: var(--font-mono);
+  font-weight: 500; /* DM Mono solo en su grosor Medium */
   font-size: 14px;
   line-height: 1.5;
+  font-synthesis: none; /* que el navegador no invente negritas ni cursivas falsas */
   -webkit-font-smoothing: antialiased;
 }
 
@@ -67,10 +88,9 @@ button {
   cursor: pointer;
 }
 
-/* Títulos grandes: Archivo expandida (125%) y Black (900) */
+/* Títulos grandes: KASST Headline Black */
 .display {
   font-family: var(--font-display);
-  font-stretch: 125%;
   font-weight: 900;
   text-transform: uppercase;
   line-height: 0.9;

@@ -41,6 +41,7 @@ if (hero.type === "image" && !photo) {
       class="hero-media"
       style={`object-position: ${hero.position}`}
       formats={["avif", "webp"]}
+      fallbackFormat="jpg"
       widths={[640, 960, 1280, 1920, 2400]}
       sizes="100vw"
       loading="eager"

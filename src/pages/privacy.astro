@@ -85,15 +85,12 @@ const updatedLabel = new Date(updated).toLocaleDateString("en-GB", {
   }
   .text {
     max-width: 62ch;
-    font-family: var(--font-display);
-    font-stretch: 100%;
     font-size: 15px;
     line-height: 1.6;
   }
   .text h2 {
     margin: 2em 0 0.5em;
     font-size: 12px;
-    font-weight: 700;
   }
   .text p {
     margin: 0 0 1em;
@@ -109,7 +106,7 @@ const updatedLabel = new Date(updated).toLocaleDateString("en-GB", {
     }
     .privacy h1 {
       grid-row: span 2;
-      font-size: clamp(40px, 5vw, 72px);
+      font-size: var(--title-size);
     }
   }
 </style>

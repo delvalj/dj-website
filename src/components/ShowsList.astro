@@ -123,7 +123,6 @@ const yearLabel =
   }
   .date {
     grid-area: date;
-    font-weight: 700;
   }
   .tickets {
     grid-area: tickets;
@@ -163,8 +162,8 @@ const yearLabel =
   @media (min-width: 768px) {
     .shows {
       grid-template-columns: 1fr 2fr;
-      gap: 24px;
-      padding: 28px var(--gutter) 40px;
+      gap: 12px;
+      padding: 26px var(--gutter) 40px;
     }
     .intro {
       display: flex;
@@ -172,7 +171,7 @@ const yearLabel =
       align-items: flex-start;
     }
     .intro h2 {
-      font-size: clamp(40px, 5vw, 72px);
+      font-size: var(--title-size);
     }
     .tour {
       display: block;
@@ -183,15 +182,27 @@ const yearLabel =
       font-size: 11px;
     }
     .row {
-      /* Columnas fijas para que fecha, sala, ciudad y entradas queden alineadas en todas las filas */
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1.15fr) 11ch;
-      column-gap: 16px;
-      align-items: center;
+      /* Columnas proporcionales (medidas en el boceto) para que todo quede alineado en todas las filas */
+      grid-template-columns: minmax(0, 146fr) minmax(0, 143fr) minmax(0, 211fr) minmax(0, 64fr);
+      grid-template-areas: none;
+      column-gap: 12px; /* que una sala de nombre largo no se pegue a la ciudad */
+      align-items: end;
       min-height: 56px;
+      /* La línea de cada fila empieza donde empieza el texto; solo el resaltado verde sobresale */
+      margin-left: 14px;
+      padding: 0 14px 12px 0;
+    }
+    .row.next {
+      align-items: center;
+      min-height: 40px;
+      margin-left: 0;
       padding: 0 14px;
     }
-    .row {
-      grid-template-areas: none;
+    .tickets {
+      text-align: left;
+    }
+    .tickets a {
+      padding: 6px 12px 6px 0;
     }
     .place {
       display: contents; /* sala y ciudad pasan a ser columnas propias */
@@ -199,9 +210,6 @@ const yearLabel =
     .date,
     .tickets {
       grid-area: auto;
-    }
-    .date {
-      font-weight: 400;
     }
     .venue::after {
       content: none;

@@ -71,7 +71,6 @@ const isPlaceholder = Object.keys(photos).length === 0;
     background: var(--green);
     color: var(--black);
     font-size: 12px;
-    font-weight: 700;
   }
   .newsletter:hover {
     background: var(--black);
@@ -82,19 +81,21 @@ const isPlaceholder = Object.keys(photos).length === 0;
   /* Escritorio: proporción del boceto y botón abajo a la derecha */
   @media (min-width: 768px) {
     .hero {
-      height: min(calc(100svh - var(--header-h)), 57vw);
+      height: min(calc(100svh - var(--header-h)), 57.2vw);
       min-height: 420px;
     }
     /* Escritorio: iconos abajo a la izquierda, a la altura del botón */
     .hero :global(.hero-social) {
       right: auto;
-      bottom: 47px;
+      bottom: 20px;
     }
+    /* Botón compacto y pegado a la esquina, como en el boceto */
     .newsletter {
       left: auto;
-      right: var(--gutter);
-      bottom: 40px;
-      padding: 18px 48px;
+      right: 20px;
+      bottom: 20px;
+      padding: 12px 48px;
+      font-size: 10px;
     }
   }
 </style>
