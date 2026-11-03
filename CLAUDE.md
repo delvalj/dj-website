@@ -64,7 +64,9 @@ pausan todas las webs de la cuenta y no se reciben formularios. Vigilar el consu
 
 ## Reglas
 - Enlaces y datos provisionales marcados con `// TODO` o `placeholder: true`.
-- Ocultar los shows pasados; el primer show futuro se resalta. Regeneración diaria programada.
+- Ocultar los shows pasados. Ninguna fila se resalta de forma fija (el verde sólido del boceto en el próximo
+  show se quitó porque parecía una fila seleccionada); solo se ponen verdes al pasar el ratón o con el teclado.
+  Regeneración diaria programada.
 - Newsletter: proveedor intercambiable (`newsletter.provider`); casilla de consentimiento obligatoria; enlace a /privacy.
 - Accesibilidad: contraste suficiente, ventana accesible con teclado, respetar prefers-reduced-motion.
 - Construir por fases (`docs/plan.md` §8): parar al final de cada una para revisión y hacer un commit por fase.

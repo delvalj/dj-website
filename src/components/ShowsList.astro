@@ -1,6 +1,6 @@
 ---
 // Sección NEXT SHOWS. Los datos vienen de src/content/shows.yaml.
-// Se ocultan los shows ya pasados y el próximo se resalta en verde, como en el boceto.
+// Se ocultan los shows ya pasados. Todas las filas se ven igual (ninguna resaltada de forma fija).
 // Cada fila con entradas es un único enlace (toda la fila se puede tocar). Efecto al pasar el ratón:
 // un relleno verde sube desde abajo, el texto pasa a negro, la fecha y TICKETS se acercan y la flecha "rueda".
 import { getCollection } from "astro:content";
@@ -29,13 +29,12 @@ const yearLabel =
       : `${years[0]}–${String(years[years.length - 1]).slice(-2)}`;
 
 // Solo es enlace si hay entradas a la venta: ni "sold out" ni sin enlace ("TBA").
-const rows = shows.map((s, i) => {
+const rows = shows.map((s) => {
   const date = formatDate(s.date);
   const place = `${s.venue}, ${s.city}, ${s.country.toUpperCase()}`;
   return {
     ...s,
     date,
-    next: i === 0,
     href: !s.soldOut && s.ticketUrl ? s.ticketUrl : undefined,
     status: s.soldOut ? "Sold out" : s.ticketUrl ? "Tickets" : "TBA",
     label: `Tickets for ${date}, ${place} (opens in a new tab)`,
@@ -61,7 +60,7 @@ const rows = shows.map((s, i) => {
           return (
             <li>
               <Row
-                class:list={["row", { next: s.next, link: s.href, off: !s.href }]}
+                class:list={["row", { link: s.href, off: !s.href }]}
                 href={s.href}
                 target={s.href && "_blank"}
                 rel={s.href && "noopener noreferrer"}
@@ -200,28 +199,6 @@ const rows = shows.map((s, i) => {
   }
   .arrow span {
     transition: transform 1s var(--ease);
-  }
-
-  /* El próximo show, resaltado en verde */
-  .row.next {
-    background: var(--green);
-    color: var(--black);
-    border-bottom-color: var(--green);
-  }
-  /* Mismo efecto, pero al revés: sube un relleno negro y el texto pasa a verde */
-  .row.next .fill {
-    background: var(--black);
-  }
-
-  @media (hover: hover) {
-    .row.next.link:hover {
-      color: var(--green);
-    }
-  }
-
-  .row.next.link:focus-visible {
-    color: var(--green);
-    outline-color: var(--green);
   }
 
   /* Sin entradas (sold out o TBA): sin enlace ni efecto, con menos intensidad */
