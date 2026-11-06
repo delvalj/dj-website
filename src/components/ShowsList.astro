@@ -19,15 +19,6 @@ const hasSampleData = shows.some((s) => s.placeholder);
 const formatDate = (d: Date) =>
   d.toLocaleDateString("en-US", { month: "long", day: "numeric", timeZone: "UTC" }).toUpperCase();
 
-// Años de la gira para la etiqueta de abajo: "2026" o "2026–27".
-const years = [...new Set(shows.map((s) => s.date.getUTCFullYear()))];
-const yearLabel =
-  years.length === 0
-    ? String(new Date().getFullYear())
-    : years.length === 1
-      ? String(years[0])
-      : `${years[0]}–${String(years[years.length - 1]).slice(-2)}`;
-
 // Solo es enlace si hay entradas a la venta: ni "sold out" ni sin enlace ("TBA").
 const rows = shows.map((s) => {
   const date = formatDate(s.date);
@@ -46,7 +37,10 @@ const rows = shows.map((s) => {
   <div class="intro">
     <h2 class="display">Next<br />Shows</h2>
     {hasSampleData && <p class="sample mono">Sample data</p>}
-    <p class="tour mono">{yearLabel}<br />Tour dates</p>
+    <!-- Texto del PDF del diseñador, en cuatro líneas -->
+    <p class="tour mono">
+      KAS:ST — Live schedule<br />Select your location<br />And follow the link<br />For ticket information.
+    </p>
   </div>
 
   {
@@ -114,11 +108,13 @@ const rows = shows.map((s) => {
     font-size: 10px;
   }
 
+  /* Mismo gris que los enlaces del menú (variable --grey de global.css): si cambia allí, cambia aquí.
+     Móvil: debajo del título. Escritorio: abajo a la izquierda, a la altura del final de la lista. */
   .tour {
-    display: none; /* en móvil no hace falta; en escritorio va abajo a la izquierda */
-    margin: 0;
+    margin: 16px 0 0;
     font-size: 11px;
     line-height: 1.4;
+    color: var(--grey);
   }
 
   .empty {
@@ -282,6 +278,7 @@ const rows = shows.map((s) => {
   @media (min-width: 768px) {
     .shows {
       min-height: var(--section-h); /* mismo alto que la portada (global.css) */
+      align-content: start; /* la fila mide lo que la lista: así el texto de abajo queda a la altura de su final */
       grid-template-columns: 1fr 2fr;
       gap: 12px;
       padding: 26px var(--gutter) 40px;
@@ -295,8 +292,7 @@ const rows = shows.map((s) => {
       font-size: var(--title-size);
     }
     .tour {
-      display: block;
-      margin-top: auto; /* empuja la etiqueta al final de la lista */
+      margin-top: auto; /* empuja el texto al final de la lista */
       padding-top: 32px;
     }
     .list {
