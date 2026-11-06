@@ -30,6 +30,9 @@ Plan completo y razonamiento: `docs/plan.md`.
 - Fotos y vídeo: duotono negro→verde→verde pálido + grano, hecho en CSS (grayscale + mix-blend-mode, ruido SVG feTurbulence).
   Nunca integrar el efecto en los archivos de imagen.
   Excepción: la foto de ABOUT se muestra sin efecto, en su color natural (PDF v1).
+  La foto de ABOUT es provisional; el recuadro es fijo y se recorta con object-fit: cover; sustituir
+  content/photos/about.jpg por la del diseñador. Recuadro: 4:5, 50 % del ancho en escritorio (a todo el ancho en
+  móvil), 1.5rem de negro arriba y abajo. Encuadre: variable `--about-focus` en `About.astro` (por defecto `center 20%`).
 
 ## Dónde se cambia cada cosa
 - Redes, emails, portada (image|video), newsletter: `src/config/site.ts`.

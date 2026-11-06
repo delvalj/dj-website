@@ -42,7 +42,12 @@ const photo = Object.values(photos)[0];
 <style>
   /* ---------- Móvil ---------- */
 
+  /* Recuadro fijo de la foto: 4:5 (a todo el ancho en móvil, 50 % en escritorio).
+     La foto lo llena siempre (object-fit: cover) y se recorta si no encaja; el recuadro no cambia.
+     --about-focus = qué parte de la foto se mantiene al recortar ("center 20%" = centrada y algo arriba,
+     para no cortar la cabeza en fotos verticales). Es lo único que hay que tocar si se cambia la foto. */
   .about-photo {
+    --about-focus: center 20%;
     position: relative;
     overflow: hidden;
     aspect-ratio: 4 / 5;
@@ -52,7 +57,7 @@ const photo = Object.values(photos)[0];
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 50% 20%; /* que se vean bien la cabeza y el torso */
+    object-position: var(--about-focus);
   }
   .about-photo :global(picture) {
     display: contents;
