@@ -25,6 +25,7 @@
   --black: #000;
   --green: #02f233;
   --green-dim: #1f4128; /* líneas finas entre filas */
+  --grey: #cccccc; /* enlaces del menú de la cabecera (PDF del diseñador, v1) */
 
   /* Tipografías */
   --font-display: "KASST Headline", "Arial Black", sans-serif;

@@ -15,7 +15,9 @@ Plan completo y razonamiento: `docs/plan.md`.
 - CMS: Sveltia CMS (compatible con Decap) en /admin; edita `src/content/shows.yaml`.
 
 ## Diseño
-- Fondo #000, un único verde neón (variable `--green` = #02F233, medido en el boceto). Sin otros colores.
+- Fondo #000, un único verde neón (variable `--green` = #02F233, medido en el boceto). Única excepción: gris
+  `--grey` = #CCCCCC para los enlaces del menú de la cabecera (el logo sigue en verde). Sin otros colores.
+- Diseño de referencia actual: `content/design/KASST WEB 2026 v1 PREVIEW.pdf` (escritorio, 1440 px de ancho).
 - Títulos: KASST Headline Black (fuente propia), en mayúsculas. Lista, UI y textos largos: DM Mono Medium
   (mayúsculas con espacio entre letras en la UI; la bio en minúsculas). Solo existen esos dos grosores:
   `font-synthesis: none`, no usar `font-weight: 700`.
