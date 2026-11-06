@@ -2,7 +2,8 @@
 // Sección ABOUT: foto y biografía, con el layout del PDF del diseñador (v1).
 // La bio se edita en src/content/bio.md (un párrafo por bloque, separados por una línea en blanco).
 // La foto es content/photos/about.jpg y se muestra tal cual, en su color natural (sin el efecto verde de la portada).
-// Escritorio: dos columnas al 50 %. Foto a la izquierda pegada al borde y a todo el alto; a la derecha,
+// Escritorio: foto en el tercio izquierdo (la columna del título NEXT SHOWS), pegada al borde y a todo el alto;
+// a la derecha, alineado con el texto de la lista de shows,
 // el título arriba y la bio abajo, alineada con el borde inferior de la foto.
 // Móvil: foto a todo el ancho (4:5) arriba y debajo el título y la bio.
 import type { ImageMetadata } from "astro";
@@ -87,7 +88,9 @@ const photo = Object.values(photos)[0];
     .about {
       min-height: var(--section-h); /* mismo alto que la portada (global.css) */
       display: grid;
-      grid-template-columns: 1fr 1fr; /* foto 50 % | texto 50 % */
+      /* Foto = la columna izquierda de NEXT SHOWS (1/3) más su margen exterior, para que el texto
+         empiece justo donde empieza el texto de la lista de shows. */
+      grid-template-columns: calc(var(--gutter) + (100% - 2 * var(--gutter) - 12px) / 3) 1fr;
     }
     .about-photo {
       aspect-ratio: auto; /* a todo el alto de la sección */
@@ -99,13 +102,14 @@ const photo = Object.values(photos)[0];
     .text {
       grid-column: 2;
       /* Título arriba y bio abajo, con todo el espacio libre entre los dos.
-         Márgenes medidos en el PDF respecto a su ancho (1440 px): 26 px arriba y abajo (1,8 %),
-         42,6 px a la izquierda (2,96 %) y 52 px a la derecha (3,6 %). */
+         Arriba, abajo y a la derecha, márgenes medidos en el PDF respecto a su ancho (1440 px):
+         26 px arriba y abajo (1,8 %) y 52 px a la derecha (3,6 %). A la izquierda, 12 px de separación
+         entre columnas + 14 px de margen de las filas de NEXT SHOWS. */
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       gap: 48px;
-      padding: 1.8vw 3.6vw 1.8vw 2.96vw;
+      padding: 1.8vw 3.6vw 1.8vw calc(12px + 14px);
     }
     .about h2 {
       font-size: var(--title-size);
