@@ -96,6 +96,13 @@ const photo = Object.values(photos)[0];
       grid-template-columns: 1fr 1fr; /* foto 50 % | texto 50 % */
       padding-block: 1.5rem; /* margen negro de 24 px arriba y abajo de la foto */
     }
+    /* Recuadro: 50 % del ancho y 4:5, pero nunca más alto que lo que cabe en pantalla
+       (ventana - cabecera - los 24 px de arriba y abajo), para que ABOUT se vea entera sin hacer scroll.
+       Si 4:5 no cabe, manda ese límite y la foto se recorta (object-fit: cover + --about-focus). */
+    .about-photo {
+      width: 100%; /* el ancho no se reduce aunque se limite la altura */
+      max-height: calc(100svh - var(--header-h) - 3rem);
+    }
     .text {
       /* La columna mide lo mismo que la foto y se divide en dos mitades de alto:
          título arriba, en la mitad superior; bio en la mitad inferior. */

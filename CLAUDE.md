@@ -31,8 +31,11 @@ Plan completo y razonamiento: `docs/plan.md`.
   Nunca integrar el efecto en los archivos de imagen.
   Excepción: la foto de ABOUT se muestra sin efecto, en su color natural (PDF v1).
   La foto de ABOUT es provisional; el recuadro es fijo y se recorta con object-fit: cover; sustituir
-  content/photos/about.jpg por la del diseñador. Recuadro: 4:5, 50 % del ancho en escritorio (a todo el ancho en
-  móvil), 1.5rem de negro arriba y abajo. Encuadre: variable `--about-focus` en `About.astro` (por defecto `center 20%`).
+  content/photos/about.jpg por la del diseñador. Encuadre: variable `--about-focus` en `About.astro` (por defecto
+  `center 20%`).
+  ABOUT: recuadro de foto al 50 % del ancho, 4:5 con altura máxima = alto de ventana - cabecera en escritorio
+  (menos los 1.5rem de negro de arriba y abajo, para que la sección quepa en una pantalla); la foto se recorta con
+  object-fit: cover. En móvil, 4:5 a todo el ancho, sin límite de altura.
 
 ## Dónde se cambia cada cosa
 - Redes, emails, portada (image|video), newsletter: `src/config/site.ts`.
