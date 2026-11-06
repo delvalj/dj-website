@@ -2,7 +2,7 @@
 // Sección CONTACT. Los emails se cambian en src/config/site.ts (contact).
 // Son enlaces mailto: al tocarlos se abre la app de correo.
 // Sección baja: en escritorio, CONTACT a la izquierda y los emails a la derecha, alineados con el texto
-// de ABOUT y de NEXT SHOWS, y a la altura del título. En móvil, los emails van debajo del título.
+// de ABOUT (mitad de la página + 3,3 %), y a la altura del título. En móvil, los emails van debajo del título.
 import { site } from "../config/site";
 
 const groups = [
@@ -84,20 +84,20 @@ const groups = [
     }
   }
 
-  /* Escritorio: misma rejilla que NEXT SHOWS (título 1/3, contenido 2/3) */
+  /* Escritorio: CONTACT a la izquierda y los emails en la mitad derecha, como el texto de ABOUT */
   @media (min-width: 768px) {
     .contact {
-      grid-template-columns: 1fr 2fr;
-      gap: 12px;
+      grid-template-columns: 1fr 1fr; /* mitades, como ABOUT */
+      gap: 0;
       align-items: center; /* emails a la altura del título */
       padding: 64px var(--gutter);
     }
     .contact h2 {
       font-size: var(--title-size);
     }
-    /* Los emails empiezan donde empieza el texto de ABOUT y de la lista de NEXT SHOWS (14 px de margen) */
+    /* Los emails empiezan donde empieza el texto de ABOUT: mitad de la página + 3,3 % del ancho */
     .info {
-      padding-left: 14px;
+      padding-left: 3.3vw;
       font-size: clamp(12px, 0.9vw, 13px);
     }
     /* BOOKINGS y MANAGEMENT uno al lado del otro (uno debajo de otro si no caben) */
