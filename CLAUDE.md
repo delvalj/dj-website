@@ -29,6 +29,7 @@ Plan completo y razonamiento: `docs/plan.md`.
 - Sin bordes redondeados. Referencia: content/design/home-mockup.png.
 - Fotos y vídeo: duotono negro→verde→verde pálido + grano, hecho en CSS (grayscale + mix-blend-mode, ruido SVG feTurbulence).
   Nunca integrar el efecto en los archivos de imagen.
+  Excepción: la foto de ABOUT se muestra sin efecto, en su color natural (PDF v1).
 
 ## Dónde se cambia cada cosa
 - Redes, emails, portada (image|video), newsletter: `src/config/site.ts`.
