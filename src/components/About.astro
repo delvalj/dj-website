@@ -1,7 +1,10 @@
 ---
-// Sección ABOUT: foto con el efecto verde y la biografía.
+// Sección ABOUT: foto y biografía, con el layout del PDF del diseñador (v1).
 // La bio se edita en src/content/bio.md (un párrafo por bloque, separados por una línea en blanco).
 // La foto es content/photos/about.jpg (original en color; el efecto lo pone la web).
+// Escritorio: dos columnas al 50 %. Foto a la izquierda pegada al borde y a todo el alto; a la derecha,
+// el título arriba y la bio abajo, alineada con el borde inferior de la foto.
+// Móvil: foto a todo el ancho (4:5) arriba y debajo el título y la bio.
 import type { ImageMetadata } from "astro";
 import { Picture } from "astro:assets";
 import Duotone from "./Duotone.astro";
@@ -15,84 +18,96 @@ const photo = Object.values(photos)[0];
 ---
 
 <section id="about" class="about">
-  <h2 class="display">About</h2>
-
-  <div class="body">
-    {
-      photo && (
-        <Duotone class="about-photo">
-          <Picture
-            src={photo}
-            alt="Portrait of KAS:ST"
-            formats={["avif", "webp"]}
-            widths={[480, 800, 1200]}
-            sizes="(min-width: 768px) 28vw, 100vw"
-          />
-        </Duotone>
-      )
-    }
-    <div class="bio">
+  {
+    photo && (
+      <Duotone class="about-photo">
+        <Picture
+          src={photo}
+          alt="Portrait of KAS:ST"
+          formats={["avif", "webp"]}
+          widths={[480, 800, 1200, 1600]}
+          sizes="(min-width: 768px) 50vw, 100vw"
+        />
+      </Duotone>
+    )
+  }
+  <div class="text">
+    <h2 class="display">About</h2>
+    <div class="bio mono">
       <Bio />
     </div>
   </div>
 </section>
 
 <style>
-  .about {
-    border-top: 1px solid var(--green-dim);
-    padding: 40px var(--gutter) 48px;
-    display: grid;
-    gap: 32px;
-  }
+  /* ---------- Móvil ---------- */
 
-  .about h2 {
-    font-size: clamp(44px, 13vw, 64px);
+  .about :global(.about-photo) {
+    aspect-ratio: 4 / 5;
   }
-
-  .body {
-    display: grid;
-    gap: 32px;
-  }
-
   .about :global(.about-photo img) {
     display: block;
     width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 5;
+    height: 100%;
     object-fit: cover;
-    object-position: 50% 30%;
+    object-position: 50% 20%; /* que se vean bien la cabeza y el torso */
+  }
+  .about :global(.about-photo picture) {
+    display: contents;
   }
 
-  /* Texto largo: DM Mono en minúsculas (la fuente de títulos solo sirve para mayúsculas grandes) */
+  .text {
+    padding: 40px var(--gutter) 48px;
+    display: grid;
+    gap: 24px;
+  }
+
+  .about h2 {
+    font-size: clamp(44px, 13vw, 64px); /* igual que NEXT SHOWS */
+  }
+
+  /* Bio: mono, mayúsculas, verde, muy pequeña y con interlineado ajustado (medidas del PDF) */
   .bio {
-    font-size: 15px;
-    line-height: 1.6;
-    max-width: 62ch;
+    font-size: 12px;
+    line-height: 1.2;
+    letter-spacing: 0.1em;
+    max-width: 39em; /* unos 56 caracteres por línea, como en el PDF */
   }
   .bio :global(p) {
-    margin: 0 0 1.2em;
+    margin: 0 0 1.2em; /* una línea en blanco entre párrafos */
   }
   .bio :global(p:last-child) {
     margin-bottom: 0;
   }
 
-  /* Escritorio: mismo esquema que NEXT SHOWS (título 1/3, contenido 2/3) */
+  /* ---------- Escritorio ---------- */
+
   @media (min-width: 768px) {
     .about {
       min-height: var(--section-h); /* mismo alto que la portada (global.css) */
-      grid-template-columns: 1fr 2fr;
-      gap: 12px; /* mismas columnas que NEXT SHOWS */
-      padding: 40px var(--gutter) 56px;
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* foto 50 % | texto 50 % */
+    }
+    .about :global(.about-photo) {
+      aspect-ratio: auto; /* a todo el alto de la sección */
+    }
+    .about :global(.about-photo img) {
+      position: absolute;
+      inset: 0;
+    }
+    .text {
+      grid-column: 2;
+      /* Título arriba y bio abajo, con todo el espacio libre entre los dos.
+         Márgenes medidos en el PDF respecto a su ancho (1440 px): 26 px arriba y abajo (1,8 %),
+         42,6 px a la izquierda (2,96 %) y 52 px a la derecha (3,6 %). */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 48px;
+      padding: 1.8vw 3.6vw 1.8vw 2.96vw;
     }
     .about h2 {
       font-size: var(--title-size);
-    }
-    .body {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-      align-items: start;
-    }
-    .bio {
-      font-size: 15px;
     }
   }
 </style>
