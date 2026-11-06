@@ -60,8 +60,8 @@ const isPlaceholder = Object.keys(photos).length === 0;
   /* Escritorio: proporción del boceto y botón abajo a la derecha */
   @media (min-width: 768px) {
     .hero {
-      height: min(calc(100svh - var(--header-h)), 57.2vw);
-      min-height: 420px;
+      height: var(--section-h); /* alto común con NEXT SHOWS y ABOUT (global.css) */
+      min-height: 0;
     }
     /* Botón compacto y pegado a la esquina, como en el boceto */
     .newsletter {

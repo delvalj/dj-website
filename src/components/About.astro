@@ -79,6 +79,7 @@ const photo = Object.values(photos)[0];
   /* Escritorio: mismo esquema que NEXT SHOWS (título 1/3, contenido 2/3) */
   @media (min-width: 768px) {
     .about {
+      min-height: var(--section-h); /* mismo alto que la portada (global.css) */
       grid-template-columns: 1fr 2fr;
       gap: 12px; /* mismas columnas que NEXT SHOWS */
       padding: 40px var(--gutter) 56px;

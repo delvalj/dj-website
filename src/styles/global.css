@@ -42,6 +42,10 @@
     --gutter: 32px;
     --header-h: 48px;
     --title-size: clamp(36px, 4.2vw, 72px); /* títulos de sección en escritorio (40 px a 960 px de ancho) */
+    /* Alto común de PORTADA, NEXT SHOWS y ABOUT en escritorio = alto de la portada:
+       el menor entre la pantalla (menos la cabecera) y el 57,2 % del ancho (proporción del PDF: 824 / 1440),
+       nunca menos de 420 px. En móvil no se fuerza: cada sección mide lo que su contenido. */
+    --section-h: max(420px, min(calc(100svh - var(--header-h)), 57.2vw));
   }
 }
 

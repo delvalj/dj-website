@@ -69,3 +69,34 @@ shows:
     country: AR
     ticketUrl: https://example.com/tickets
     placeholder: true
+  # DATOS DE EJEMPLO – BORRAR. Añadidos para que NEXT SHOWS llegue al alto de la portada en escritorio.
+  - date: 2027-02-06
+    venue: PLACEHOLDER VENUE
+    city: Paris
+    country: FR
+    ticketUrl: https://example.com/tickets
+    placeholder: true
+  - date: 2027-02-20
+    venue: PLACEHOLDER VENUE
+    city: Lisbon
+    country: PT
+    ticketUrl: https://example.com/tickets
+    placeholder: true
+  - date: 2027-03-13
+    venue: PLACEHOLDER VENUE
+    city: Ibiza
+    country: ES
+    ticketUrl: https://example.com/tickets
+    placeholder: true
+  - date: 2027-03-27
+    venue: PLACEHOLDER VENUE
+    city: Tokyo
+    country: JP
+    ticketUrl: https://example.com/tickets
+    placeholder: true
+  - date: 2027-04-17
+    venue: PLACEHOLDER VENUE
+    city: Melbourne
+    country: AU
+    ticketUrl: https://example.com/tickets
+    placeholder: true
