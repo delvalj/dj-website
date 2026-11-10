@@ -2,17 +2,18 @@
 // Portada: foto o vídeo a todo el ancho con el efecto verde, más el botón del newsletter.
 import Duotone from "./Duotone.astro";
 import HeroMedia from "./HeroMedia.astro";
-
-const photos = import.meta.glob("/content/photos/hero.{jpg,jpeg,png,webp}", { eager: true });
-const isPlaceholder = Object.keys(photos).length === 0;
+import { heroPhoto } from "../config/heroPhoto";
+import { site } from "../config/site";
 ---
 
-<section class="hero" aria-label="KAS:ST">
+<section class="hero" aria-labelledby="hero-title">
+  <!-- Título principal de la página: el diseño no lo muestra, pero Google y los lectores de pantalla lo necesitan -->
+  <h1 id="hero-title" class="sr-only">{site.name}</h1>
   <Duotone class="hero-frame">
     <HeroMedia />
   </Duotone>
 
-  {isPlaceholder && <p class="hero-note mono">Placeholder — add content/photos/hero.jpg</p>}
+  {!heroPhoto && <p class="hero-note mono">Placeholder — add content/photos/hero.jpg</p>}
 
   <!-- La ventana del newsletter se conecta en la fase 6 -->
   <button type="button" class="newsletter mono" data-newsletter-open>Join the newsletter</button>

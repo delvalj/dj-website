@@ -16,7 +16,10 @@ const updatedLabel = new Date(updated).toLocaleDateString("en-GB", {
 });
 ---
 
-<Base title={`Privacy Policy — ${site.name}`}>
+<Base
+  title={`Privacy Policy — ${site.name}`}
+  description={`How the official ${site.name} website collects, uses and protects your personal data.`}
+>
   <Header />
   <main class="privacy">
     <h1 class="display">Privacy<br />Policy</h1>

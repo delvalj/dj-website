@@ -1,0 +1,17 @@
+# Cabeceras que Netlify añade a las respuestas.
+
+# Seguridad básica para toda la web
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# Archivos generados por Astro: su nombre cambia cuando cambia el contenido, así que el navegador
+# puede guardarlos un año sin volver a pedirlos.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Fuentes: se guardan un año. Si algún día se sustituye una fuente, hay que cambiarle el nombre al archivo
+# (y en global.css y Base.astro) para que los navegadores descarguen la nueva.
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable

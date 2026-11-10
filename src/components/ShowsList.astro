@@ -4,6 +4,7 @@
 // Cada fila con entradas es un único enlace (toda la fila se puede tocar). Efecto al pasar el ratón:
 // un relleno verde sube desde abajo, el texto pasa a negro, la fecha y TICKETS se acercan y la flecha "rueda".
 import { getCollection } from "astro:content";
+import { site } from "../config/site";
 
 const DAY = 24 * 60 * 60 * 1000;
 // Un show sigue visible durante todo su día (y la noche siguiente, por si acaba de madrugada).
@@ -22,18 +23,41 @@ const formatDate = (d: Date) =>
 // Solo es enlace si hay entradas a la venta: ni "sold out" ni sin enlace ("TBA").
 const rows = shows.map((s) => {
   const date = formatDate(s.date);
-  const place = `${s.venue}, ${s.city}, ${s.country.toUpperCase()}`;
   return {
     ...s,
     date,
     href: !s.soldOut && s.ticketUrl ? s.ticketUrl : undefined,
     status: s.soldOut ? "Sold out" : s.ticketUrl ? "Tickets" : "TBA",
-    label: `Tickets for ${date}, ${place} (opens in a new tab)`,
   };
 });
+
+// Fichas de los shows para Google (datos estructurados). Los de ejemplo (placeholder) no se incluyen.
+// Al escribirlas en la página se cambia "<" por su código (\u003c) para que ningún texto pueda cerrar el <script>.
+const events = shows
+  .filter((s) => !s.placeholder)
+  .map((s) => ({
+    "@context": "https://schema.org",
+    "@type": "MusicEvent",
+    name: `${site.name} at ${s.venue}`,
+    startDate: s.date.toISOString().slice(0, 10),
+    location: {
+      "@type": "Place",
+      name: s.venue,
+      address: { "@type": "PostalAddress", addressLocality: s.city, addressCountry: s.country.toUpperCase() },
+    },
+    performer: { "@id": `${site.url}/#artist` },
+    ...(s.ticketUrl && {
+      offers: {
+        "@type": "Offer",
+        url: s.ticketUrl,
+        availability: `https://schema.org/${s.soldOut ? "SoldOut" : "InStock"}`,
+      },
+    }),
+  }));
 ---
 
 <section id="shows" class="shows">
+  {events.length > 0 && <script type="application/ld+json" is:inline set:html={JSON.stringify(events).replace(/</g, "\\u003c")} />}
   <div class="intro">
     <h2 class="display">Next<br />Shows</h2>
     {hasSampleData && <p class="sample mono">Sample data</p>}
@@ -58,7 +82,6 @@ const rows = shows.map((s) => {
                 href={s.href}
                 target={s.href && "_blank"}
                 rel={s.href && "noopener noreferrer"}
-                aria-label={s.href && s.label}
               >
                 <span class="fill" aria-hidden="true" />
                 <span class="date">{s.date}</span>
@@ -77,6 +100,7 @@ const rows = shows.map((s) => {
                       <span>→</span>
                     </span>
                   )}
+                  {s.href && <span class="sr-only">(opens in a new tab)</span>}
                 </span>
               </Row>
             </li>

@@ -53,6 +53,12 @@ Plan completo y razonamiento: `docs/plan.md`.
   Si falta la de portada se muestra un marcador. Ahora la portada es `hero.png` (720×900, vertical; provisional:
   escasa para escritorio). Intensidad del efecto verde: variables `--duo-*` en `Duotone.astro`. Vídeos: `public/media/`.
   Originales pesados: `content/originals/` (ignorada por Git, solo en local).
+- SEO: título y descripción para Google en `src/config/site.ts` (`title`, `description`); etiquetas comunes
+  (canonical, Open Graph, favicon) en `Base.astro`. El dominio solo se escribe en `site.url`: de ahí salen el
+  canonical, `robots.txt` (`src/pages/robots.txt.ts`) y el sitemap. Datos estructurados: artista en `index.astro`
+  (solo redes reales en `sameAs`) y shows en `ShowsList.astro` (nunca los `placeholder`).
+  Favicon: `public/favicon.png` y `apple-touch-icon.png` (símbolo de `src/assets/logo.png` en verde sobre negro).
+  Imagen al compartir (1200×630): la fabrica `src/pages/og.jpg.ts` con el logo y la foto de portada en verde. Cabeceras de Netlify (caché, seguridad): `public/_headers`.
 - Bio (ABOUT): `src/content/bio.md`. Emails (CONTACT): `src/config/site.ts` (`contact`).
 - Política de privacidad: `src/pages/privacy.astro`. Falta el responsable de los datos (`site.privacy`, con TODO);
   mientras falte, la página muestra "DRAFT". Completar y revisar antes de activar el newsletter.

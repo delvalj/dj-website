@@ -6,9 +6,23 @@ import ShowsList from "../components/ShowsList.astro";
 import About from "../components/About.astro";
 import Contact from "../components/Contact.astro";
 import Footer from "../components/Footer.astro";
+import { site } from "../config/site";
+
+// Ficha del artista para Google (datos estructurados). En "sameAs" solo van los perfiles reales:
+// los provisionales de site.ts apuntan a la página principal de cada red (ruta "/") y se descartan.
+const artist = {
+  "@context": "https://schema.org",
+  "@type": "MusicGroup",
+  "@id": `${site.url}/#artist`,
+  name: site.name,
+  url: site.url,
+  genre: "Electronic",
+  sameAs: Object.values(site.social).filter((url) => new URL(url).pathname !== "/"),
+};
 ---
 
 <Base>
+  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(artist)} />
   <Header />
   <main id="top">
     <Hero />

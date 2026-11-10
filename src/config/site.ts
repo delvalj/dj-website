@@ -16,6 +16,11 @@ export const site = {
   name: "KAS:ST",
   url: "https://kasst.art", // TODO: dominio por confirmar
 
+  // Lo que se ve en Google y al compartir el enlace: título de la pestaña y resumen (sacado de la bio).
+  title: "KAS:ST — Official Website | Tour Dates & Tickets",
+  description:
+    "Official website of KAS:ST: electronic music blending atmospheric soundscapes, intricate melodies and powerful rhythms. Tour dates, tickets and contact.",
+
   hero,
 
   contact: {
