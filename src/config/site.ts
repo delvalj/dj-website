@@ -5,12 +5,21 @@ type Hero =
   // Foto: se toma de content/photos/hero.jpg (también vale .png o .webp).
   // position = qué parte de la foto se mantiene al recortarla en móvil ("50% 30%" = centro, algo arriba).
   | { type: "image"; position: string }
-  // Vídeo: archivos en public/media/. srcMobile (vertical) es opcional; poster es la imagen fija.
-  | { type: "video"; src: string; srcMobile?: string; poster: string; position: string };
+  // Vídeo: archivos en public/media/. srcMobile (vertical) es opcional; poster es la imagen fija
+  // que se ve mientras carga (recomendable; sin ella se ve negro hasta que carga el vídeo).
+  | { type: "video"; src: string; srcMobile?: string; poster?: string; position: string };
 
 // Para pasar a vídeo, sube los archivos a public/media/ y cambia la portada por:
 // { type: "video", src: "/media/hero.mp4", srcMobile: "/media/hero-mobile.mp4", poster: "/media/hero-poster.jpg", position: "50% 50%" }
-const hero: Hero = { type: "image", position: "50% 50%" };
+// Para volver a la foto: { type: "image", position: "50% 50%" }
+// Original sin comprimir: content/originals/hero-original.mp4 (solo en local).
+const hero: Hero = {
+  type: "video",
+  src: "/media/hero.mp4", // escritorio: 1280×720, ~4,8 MB
+  srcMobile: "/media/hero-mobile.mp4", // móvil: vertical 540×960 (recorte del centro), ~2,8 MB
+  poster: "/media/hero-poster.jpg", // primer fotograma, se ve mientras carga el vídeo
+  position: "50% 50%",
+};
 
 export const site = {
   name: "KAS:ST",

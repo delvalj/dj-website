@@ -25,7 +25,8 @@
   --black: #000;
   --green: #02f233;
   --green-dim: #1f4128; /* líneas finas entre filas */
-  --grey: #cccccc; /* enlaces del menú de la cabecera (PDF del diseñador, v1) */
+  --grey: #cccccc; /* enlaces del menú de la cabecera y hover de la lista de shows */
+  --footer-bg: #1a1a1a; /* fondo del footer */
 
   /* Tipografías */
   --font-display: "KASST Headline", "Arial Black", sans-serif;
@@ -33,14 +34,17 @@
 
   /* Espaciados */
   --gutter: 16px; /* margen lateral en móvil */
-  --header-h: 56px;
+  --header-h: 59px;
+  /* Hueco negro entre secciones: el mismo en todas (el de la portada a NEXT SHOWS) */
+  --section-gap: 40px;
   --tracking: 0.08em; /* espacio entre letras en textos mono */
 }
 
 @media (min-width: 768px) {
   :root {
     --gutter: 32px;
-    --header-h: 48px;
+    --header-h: 50px;
+    --section-gap: 26px;
     --title-size: clamp(36px, 4.2vw, 72px); /* títulos de sección en escritorio (40 px a 960 px de ancho) */
     /* Alto común de PORTADA, NEXT SHOWS y ABOUT en escritorio = alto de la portada:
        el menor entre la pantalla (menos la cabecera) y el 57,2 % del ancho (proporción del PDF: 824 / 1440),
@@ -117,6 +121,12 @@ button {
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
+}
+
+/* Texto seleccionado: en verde, con la letra en negro (en vez del azul del navegador) */
+::selection {
+  background: var(--green);
+  color: var(--black);
 }
 
 :focus-visible {

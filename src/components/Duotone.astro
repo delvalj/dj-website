@@ -5,16 +5,24 @@
 //    sombras → negro, tonos medios → verde, luces → verde muy pálido.
 // 3. Encima, grano generado con SVG (no hay que descargar ninguna imagen).
 // Los valores se ajustan con las variables --duo-* de abajo.
+// effect={false}: muestra la foto o el vídeo tal cual, sin efecto (p. ej. si el archivo ya viene en verde).
 interface Props {
   class?: string;
+  effect?: boolean;
 }
-const { class: className } = Astro.props;
+const { class: className, effect = true } = Astro.props;
 ---
 
-<div class:list={["duotone", className]}>
+<div class:list={["duotone", { "duotone--off": !effect }, className]}>
   <slot />
-  <span class="duo-tint" aria-hidden="true"></span>
-  <span class="duo-grain" aria-hidden="true"></span>
+  {
+    effect && (
+      <>
+        <span class="duo-tint" aria-hidden="true" />
+        <span class="duo-grain" aria-hidden="true" />
+      </>
+    )
+  }
 </div>
 
 <style>
@@ -35,6 +43,13 @@ const { class: className } = Astro.props;
   .duotone > :global(video),
   .duotone > :global(.duo-media) {
     filter: grayscale(1) contrast(var(--duo-contrast)) brightness(var(--duo-brightness));
+  }
+
+  .duotone--off > :global(img),
+  .duotone--off > :global(picture img),
+  .duotone--off > :global(video),
+  .duotone--off > :global(.duo-media) {
+    filter: none;
   }
 
   .duo-tint,

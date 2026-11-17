@@ -15,8 +15,12 @@ Plan completo y razonamiento: `docs/plan.md`.
 - CMS: Sveltia CMS (compatible con Decap) en /admin; edita `src/content/shows.yaml`.
 
 ## Diseño
-- Fondo #000, un único verde neón (variable `--green` = #02F233, medido en el boceto). Única excepción: gris
-  `--grey` = #CCCCCC para los enlaces del menú de la cabecera (el logo sigue en verde). Sin otros colores.
+- Fondo #000, un único verde neón (variable `--green` = #02F233, medido en el boceto). Excepciones: gris
+  `--grey` = #CCCCCC para los enlaces del menú de la cabecera (el logo sigue en verde) y el hover de la lista
+  de shows; `--footer-bg` = #1A1A1A, fondo del footer. Sin otros colores. Texto seleccionado: fondo verde, letra negra.
+- Hueco entre secciones: el mismo en todas, variable `--section-gap` (40 px móvil, 26 px escritorio).
+- ABOUT (escritorio): el final de la bio coincide siempre con el borde inferior de la foto; si la bio es más
+  alta, la foto se alarga con ella.
 - Diseño de referencia actual: `content/design/KASST WEB 2026 v1 PREVIEW.pdf` (escritorio, 1440 px de ancho).
 - Títulos: KASST Headline Black (fuente propia), en mayúsculas. Lista, UI y textos largos: DM Mono Medium
   (mayúsculas con espacio entre letras en la UI; la bio en minúsculas). Solo existen esos dos grosores:
@@ -28,7 +32,8 @@ Plan completo y razonamiento: `docs/plan.md`.
   - DM Mono (licencia libre OFL): convertida a woff2 (21 KB).
 - Sin bordes redondeados. Referencia: content/design/home-mockup.png.
 - Fotos y vídeo: duotono negro→verde→verde pálido + grano, hecho en CSS (grayscale + mix-blend-mode, ruido SVG feTurbulence).
-  Nunca integrar el efecto en los archivos de imagen.
+  Nunca integrar el efecto en los archivos de imagen. Excepción: el vídeo de portada ya viene en verde del
+  diseñador, así que el efecto CSS está desactivado en la portada (`<Duotone effect={false}>` en `Hero.astro`).
   Excepción: la foto de ABOUT se muestra sin efecto, en su color natural (PDF v1).
   La foto de ABOUT es provisional; el recuadro es fijo y se recorta con object-fit: cover; sustituir
   content/photos/about.jpg por la del diseñador. Encuadre: variable `--about-focus` en `About.astro` (por defecto
@@ -43,15 +48,17 @@ Plan completo y razonamiento: `docs/plan.md`.
 - Logo: componente `Logo`. Definitivo: `src/assets/logo.svg` (solo el texto KAS:ST, vectorial), sacado de
   `content/design/logo_header.svg` (export de Illustrator): se quitó su color fijo (#00f132) para usar
   `fill="currentColor"` (pinta con `--green`) y se ajustó el `viewBox` al dibujo (el original tenía mucho margen).
-  Alto: 26 px en móvil, 25 px en escritorio. Si se reemplaza, repetir esos dos pasos.
+  Alto: 28 px en móvil, 27 px en escritorio. Cabecera: 59 px móvil, 50 px escritorio (`--header-h`). Si se reemplaza, repetir esos dos pasos.
   Versiones PNG antiguas (respaldo, no se usan mientras exista el SVG): `src/assets/logo-wordmark.png` y
   `src/assets/logo.png` (símbolo + texto, de `content/design/logokast.png`).
 - Redes: URLs en `src/config/site.ts` (`social`); iconos de Simple Icons en `SocialIcons`, solo en el footer.
   Resident Advisor no está en Simple Icons: monograma "RA" en texto.
   Enlaces en pestaña nueva con `rel="noopener noreferrer"` y `aria-label`.
 - Fotos: `content/photos/` (hero.jpg|png|webp, about.jpg), redimensionadas a ~2000–3000 px antes de subirlas a Git.
-  Si falta la de portada se muestra un marcador. Ahora la portada es `hero.png` (720×900, vertical; provisional:
+  Si falta la de portada se muestra un marcador. La foto de portada (de respaldo) es `hero.png` (720×900, vertical; provisional:
   escasa para escritorio). Intensidad del efecto verde: variables `--duo-*` en `Duotone.astro`. Vídeos: `public/media/`.
+  La portada es ahora vídeo: `public/media/hero.mp4` (1280×720, ~4,8 MB), `hero-mobile.mp4` (vertical 540×960) y
+  `hero-poster.jpg`, sacados con ffmpeg de `content/originals/hero-original.mp4` (sin audio, H.264, CRF 27).
   Originales pesados: `content/originals/` (ignorada por Git, solo en local).
 - SEO: título y descripción para Google en `src/config/site.ts` (`title`, `description`); etiquetas comunes
   (canonical, Open Graph, favicon) en `Base.astro`. El dominio solo se escribe en `site.url`: de ahí salen el
@@ -80,7 +87,8 @@ pausan todas las webs de la cuenta y no se reciben formularios. Vigilar el consu
 ## Reglas
 - Enlaces y datos provisionales marcados con `// TODO` o `placeholder: true`.
 - Ocultar los shows pasados. Ninguna fila se resalta de forma fija (el verde sólido del boceto en el próximo
-  show se quitó porque parecía una fila seleccionada); solo se ponen verdes al pasar el ratón o con el teclado.
+  show se quitó porque parecía una fila seleccionada); solo se ponen grises (`--grey`, letra negra) al pasar
+  el ratón o con el teclado.
   Regeneración diaria programada.
 - Newsletter: proveedor intercambiable (`newsletter.provider`); casilla de consentimiento obligatoria; enlace a /privacy.
 - Accesibilidad: contraste suficiente, ventana accesible con teclado, respetar prefers-reduced-motion.

@@ -36,7 +36,9 @@ const groups = [
 
 <style>
   .contact {
-    padding: 56px var(--gutter);
+    /* Arriba, el mismo hueco que entre las demás secciones. Abajo, más espacio negro hasta el footer
+       (3 veces el hueco entre secciones). */
+    padding: var(--section-gap) var(--gutter) calc(var(--section-gap) * 3);
     display: grid;
     gap: 16px;
   }
@@ -92,7 +94,6 @@ const groups = [
       grid-template-columns: 1fr 1fr; /* mitades, como ABOUT */
       gap: 0;
       align-items: center; /* emails a la altura del título */
-      padding: 64px var(--gutter);
     }
     .contact h2 {
       font-size: var(--title-size);

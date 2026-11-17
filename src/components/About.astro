@@ -2,9 +2,9 @@
 // Sección ABOUT: foto y biografía, con el layout del PDF del diseñador (v1).
 // La bio se edita en src/content/bio.md (un párrafo por bloque, separados por una línea en blanco).
 // La foto es content/photos/about.jpg y se muestra tal cual, en su color natural (sin el efecto verde de la portada).
-// Escritorio: foto al 50 % del ancho, pegada al borde izquierdo, en 4:5 y con 24 px de negro arriba y abajo.
+// Escritorio: foto al 50 % del ancho, pegada al borde izquierdo, en 4:5, con el mismo hueco negro arriba que el resto de secciones (--section-gap).
 // A la derecha, el título arriba (alineado con el borde superior de la foto) y la bio en la mitad inferior.
-// El alto de la sección lo marca la foto.
+// El alto de la sección lo marca la foto; el final de la bio coincide siempre con su borde inferior.
 // Móvil: foto a todo el ancho (4:5) arriba y debajo el título y la bio.
 import type { ImageMetadata } from "astro";
 import { Picture } from "astro:assets";
@@ -46,13 +46,26 @@ const photo = Object.values(photos)[0];
      La foto lo llena siempre (object-fit: cover) y se recorta si no encaja; el recuadro no cambia.
      --about-focus = qué parte de la foto se mantiene al recortar ("center 20%" = centrada y algo arriba,
      para no cortar la cabeza en fotos verticales). Es lo único que hay que tocar si se cambia la foto. */
+  .about {
+    padding-top: var(--section-gap); /* mismo hueco que entre la portada y NEXT SHOWS */
+  }
+
+  /* El recuadro mide lo que marca su "molde" invisible (::before, 4:5); la foto va encima, ocupando
+     todo el recuadro. Así, en escritorio, si la bio es más alta que la foto, la foto se alarga con ella
+     y el final de la bio coincide siempre con el borde inferior de la foto. */
   .about-photo {
     --about-focus: center 20%;
     position: relative;
     overflow: hidden;
+  }
+  .about-photo::before {
+    content: "";
+    display: block;
     aspect-ratio: 4 / 5;
   }
   .about-photo :global(img) {
+    position: absolute;
+    inset: 0;
     display: block;
     width: 100%;
     height: 100%;
@@ -64,7 +77,7 @@ const photo = Object.values(photos)[0];
   }
 
   .text {
-    padding: 40px var(--gutter) 48px;
+    padding: 40px var(--gutter) 0; /* el hueco de abajo lo pone la sección siguiente */
     display: grid;
     gap: 24px;
   }
@@ -94,14 +107,13 @@ const photo = Object.values(photos)[0];
     .about {
       display: grid;
       grid-template-columns: 1fr 1fr; /* foto 50 % | texto 50 % */
-      padding-block: 1.5rem; /* margen negro de 24 px arriba y abajo de la foto */
     }
     /* Recuadro: 50 % del ancho y 4:5, pero nunca más alto que lo que cabe en pantalla
-       (ventana - cabecera - los 24 px de arriba y abajo), para que ABOUT se vea entera sin hacer scroll.
-       Si 4:5 no cabe, manda ese límite y la foto se recorta (object-fit: cover + --about-focus). */
-    .about-photo {
-      width: 100%; /* el ancho no se reduce aunque se limite la altura */
-      max-height: calc(100svh - var(--header-h) - 3rem);
+       (ventana - cabecera - el hueco de arriba y de abajo), para que ABOUT se vea entera sin hacer scroll.
+       Si 4:5 no cabe, manda ese límite y la foto se recorta (object-fit: cover + --about-focus).
+       Si la bio no cabe, la foto crece hasta su altura (ver ::before arriba). */
+    .about-photo::before {
+      max-height: calc(100svh - var(--header-h) - 2 * var(--section-gap));
     }
     .text {
       /* La columna mide lo mismo que la foto y se divide en dos mitades de alto:
@@ -114,10 +126,15 @@ const photo = Object.values(photos)[0];
       font-size: var(--title-size); /* igual que NEXT SHOWS; alineado con el borde superior de la foto */
     }
     .bio {
-      /* Ocupa la mitad inferior: empieza a media altura de la foto. Si el texto no cabe en esa mitad
-         (pantallas más estrechas), la caja crece hacia arriba en vez de alargar la sección. */
+      /* Ocupa la mitad inferior de la columna. Si el texto no cabe en esa mitad (pantallas más estrechas),
+         la caja crece hacia arriba en vez de alargar la sección.
+         El texto se apila desde abajo (justify-content: flex-end): aunque sea más corto que la mitad, su
+         última línea queda siempre a ras del borde inferior de la foto. */
       margin-top: auto;
       min-height: 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
       max-width: none; /* llega hasta el margen derecho */
       font-size: clamp(11px, 0.85vw, 16px); /* 11 px en pantallas estrechas, crece con el ancho hasta 16 px (como el PDF) */
     }

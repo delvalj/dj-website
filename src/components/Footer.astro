@@ -13,19 +13,26 @@ const year = new Date().getFullYear();
 
 <style>
   .footer {
-    padding: 32px var(--gutter);
+    /* Footer bajito: iconos y © en una sola fila (también en móvil) */
+    padding: 4px var(--gutter);
+    background: var(--footer-bg);
     display: grid;
-    gap: 16px;
-    justify-items: start;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 12px;
   }
   .footer p {
     margin: 0;
-    font-size: 11px;
+    font-size: 10px;
   }
+  /* Iconos más pequeños en escritorio (con ratón no hace falta tanta zona táctil) */
   @media (min-width: 768px) {
-    .footer {
-      grid-template-columns: 1fr auto;
-      align-items: center;
+    .footer :global(.social) {
+      --icon: 16px;
+    }
+    .footer :global(.social a) {
+      width: 32px;
+      height: 32px;
     }
   }
 </style>
