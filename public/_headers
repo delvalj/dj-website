@@ -1,4 +1,4 @@
-# Cabeceras que Netlify añade a las respuestas.
+# Cabeceras de caché y seguridad (formato de Netlify). TODO: al publicar en Vercel, pasarlas a vercel.json.
 
 # Seguridad básica para toda la web
 /*

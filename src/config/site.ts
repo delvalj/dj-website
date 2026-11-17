@@ -54,6 +54,6 @@ export const site = {
     updated: "2026-10-18", // fecha de la última revisión del texto
   },
 
-  // Adónde se envían las altas. "netlify" = Netlify Forms (temporal).
-  newsletter: { provider: "netlify" },
+  // Adónde se envían las altas. TODO: elegir proveedor (Laylo, Brevo, MailerLite…) antes de activar el newsletter.
+  newsletter: { provider: "none" },
 } as const;

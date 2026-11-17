@@ -1,5 +1,5 @@
 # Lista de shows de KAS:ST.
-# Normalmente se edita desde el panel /admin (fase 7). Si se edita a mano, cada show lleva:
+# Se edita a mano (no hay panel /admin). Cada show lleva:
 #   date: AAAA-MM-DD          fecha del show (obligatoria)
 #   venue: nombre de la sala  (obligatorio)
 #   city: ciudad              (obligatoria)

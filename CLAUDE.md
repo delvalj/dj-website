@@ -11,8 +11,10 @@ Plan completo y razonamiento: `docs/plan.md`.
 ## Stack
 - Astro (sitio estático) + CSS propio. Nada de frameworks de UI ni Tailwind.
 - Requiere Node >= 22.22 y npm >= 9.6.5 (exigido por Astro 7).
-- Alojamiento: Netlify, con despliegue automático desde GitHub `delvalj/dj-website` (rama main, repo privado).
-- CMS: Sveltia CMS (compatible con Decap) en /admin; edita `src/content/shows.yaml`.
+- Código en GitHub `delvalj/dj-website` (rama main, repo privado).
+- Alojamiento: **Vercel** (por conectar; lo hará el propietario más adelante). Todavía no está publicada en ningún sitio.
+  NO usar Netlify (descartado por el propietario el 2026-11-17).
+- Sin CMS ni login en /admin (descartado): los shows se editan directamente en `src/content/shows.yaml`.
 
 ## Diseño
 - Fondo #000, un único verde neón (variable `--green` = #02F233, medido en el boceto). Excepciones: gris
@@ -65,24 +67,12 @@ Plan completo y razonamiento: `docs/plan.md`.
   canonical, `robots.txt` (`src/pages/robots.txt.ts`) y el sitemap. Datos estructurados: artista en `index.astro`
   (solo redes reales en `sameAs`) y shows en `ShowsList.astro` (nunca los `placeholder`).
   Favicon: `public/favicon.png` y `apple-touch-icon.png` (símbolo de `src/assets/logo.png` en verde sobre negro).
-  Imagen al compartir (1200×630): la fabrica `src/pages/og.jpg.ts` con el logo y la foto de portada en verde. Cabeceras de Netlify (caché, seguridad): `public/_headers`.
+  Imagen al compartir (1200×630): la fabrica `src/pages/og.jpg.ts` con el logo y la foto de portada en verde.
+  Cabeceras de caché y seguridad: `public/_headers` (formato de Netlify; al pasar a Vercel hay que llevarlas a
+  `vercel.json`).
 - Bio (ABOUT): `src/content/bio.md`. Emails (CONTACT): `src/config/site.ts` (`contact`).
 - Política de privacidad: `src/pages/privacy.astro`. Falta el responsable de los datos (`site.privacy`, con TODO);
   mientras falte, la página muestra "DRAFT". Completar y revisar antes de activar el newsletter.
-
-## Acceso a /admin (login del artista)
-Sveltia CMS con backend GitHub; Netlify hace de intermediario OAuth. NO usar Netlify Identity ni Git Gateway
-(Git Gateway está obsoleto en Netlify y Sveltia no lo soporta).
-- Cuentas necesarias: GitHub del propietario (dueño del repo), Netlify (gratis, conectada al repo) y GitHub del
-  artista (gratis), invitado como *collaborator* con permiso de escritura.
-- Configuración única: OAuth App en GitHub con callback `https://api.netlify.com/auth/done`; su Client ID/Secret
-  en Netlify → OAuth / Authentication providers → GitHub. En `public/admin/config.yml` NO poner `base_url`.
-- Uso: `kasst.art/admin` → "Sign in with GitHub" → editar → Publish → Netlify republica en 1–2 min.
-
-## Netlify Forms (destino temporal del newsletter)
-Verificado el 2026-10-18: desde el 14/04/2026 los envíos son gratis e ilimitados en los planes por créditos,
-incluido Free. Pero el plan Free tiene un tope fijo de 300 créditos/mes: si se agotan (p. ej. por tráfico) se
-pausan todas las webs de la cuenta y no se reciben formularios. Vigilar el consumo en el panel de Netlify.
 
 ## Reglas
 - Enlaces y datos provisionales marcados con `// TODO` o `placeholder: true`.
@@ -90,7 +80,8 @@ pausan todas las webs de la cuenta y no se reciben formularios. Vigilar el consu
   show se quitó porque parecía una fila seleccionada); solo se ponen grises (`--grey`, letra negra) al pasar
   el ratón o con el teclado.
   Regeneración diaria programada.
-- Newsletter: proveedor intercambiable (`newsletter.provider`); casilla de consentimiento obligatoria; enlace a /privacy.
+- Newsletter: proveedor intercambiable (`newsletter.provider`), todavía sin elegir (Netlify Forms descartado);
+  casilla de consentimiento obligatoria; enlace a /privacy.
 - Accesibilidad: contraste suficiente, ventana accesible con teclado, respetar prefers-reduced-motion.
 - Construir por fases (`docs/plan.md` §8): parar al final de cada una para revisión y hacer un commit por fase.
 

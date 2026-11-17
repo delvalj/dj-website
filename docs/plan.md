@@ -49,7 +49,7 @@ Formato: escritorio, unos 960 px de ancho. Solo se ve la home: cabecera, portada
 | Proveedor de newsletter | Ver sección 5. | No |
 | **Política de privacidad** | Es obligatoria si recogemos emails (RGPD). Hay que saber quién es el responsable de los datos: nombre o empresa y email. | Sí, antes de activar el newsletter |
 | Dominio | Por ejemplo `kasst.com` o `kasstmusic.com`. ¿Ya existe? | Solo para publicar |
-| Quién actualiza los shows | ¿El artista, el management o la agencia? ¿Tienen cuenta de GitHub? | Afecta al CMS |
+| Quién actualiza los shows | ¿El artista, el management o la agencia? | Sin CMS: se edita `shows.yaml` |
 
 ---
 
@@ -75,9 +75,9 @@ Formato: escritorio, unos 960 px de ancho. Solo se ve la home: cabecera, portada
 - Permite trocear la web en **componentes** (Header, Hero, ShowsList…). Cada pieza vive en su archivo y los cambios son localizados.
 - Lee la lista de shows desde un archivo de datos y **comprueba que esté bien escrito**: si falta una fecha o un enlace está mal, avisa antes de publicar.
 - Optimiza las fotos automáticamente: tamaños adecuados para móvil y formatos modernos (WebP/AVIF).
-- Alternativa descartada: HTML a mano. Es más simple al principio, pero no valida los datos, no optimiza imágenes y encaja peor con el CMS.
+- Alternativa descartada: HTML a mano. Es más simple al principio, pero no valida los datos, no optimiza imágenes.
 
-**Alojamiento: Netlify (plan gratuito)**, conectado al repo de GitHub (`delvalj/dj-website`). Cada cambio guardado en GitHub (por ti o por el CMS) publica la web sola en 1–2 minutos. Además da HTTPS gratis y formularios incluidos, que servirían de solución temporal para el newsletter.
+**Alojamiento: Vercel** (por conectar; lo hará el propietario más adelante), enlazado al repo de GitHub (`delvalj/dj-website`). Cada cambio guardado en GitHub publicará la web sola en 1–2 minutos, con HTTPS gratis. *Netlify se descartó el 2026-11-17.*
 
 **Efecto verde (duotono + grano) hecho con CSS:**
 - La foto original se pone en blanco y negro con contraste alto (`filter: grayscale contrast`). Encima van capas de color con modos de fusión (`mix-blend-mode`): una tiñe las sombras de negro y otra las luces de verde pálido.
@@ -104,15 +104,16 @@ El formulario quedará preparado con un **"adaptador"**: un ajuste en `site.ts` 
 | **Brevo** | Empresa europea (buena para RGPD) y doble confirmación sencilla. | Gratis con límite de envíos diarios |
 | **MailerLite** | Sencillo, plantillas bonitas y buen plan gratuito. | Gratis hasta unos 1.000 suscriptores |
 | **Kit (ConvertKit)** | Pensado para creadores, con automatizaciones. | Plan gratuito generoso |
-| *Temporal:* **Netlify Forms** | Guarda las altas en el panel de Netlify y luego se exportan a CSV. No envía emails. | Gratis e ilimitado en el plan Free por créditos (desde abril de 2026; verificado el 2026-10-18). Ojo: si se agotan los 300 créditos/mes del plan, la web se pausa y no recibe envíos |
 
 *Los precios cambian: hay que comprobarlos al elegir.
 
-**Recomendación:** **Laylo** si el objetivo principal es avisar de fechas y entradas a los fans de Instagram. **Brevo** o **MailerLite** si se quiere un newsletter clásico. Hasta decidir, usar **Netlify Forms** para no perder ninguna alta. En cualquier caso: doble confirmación (double opt-in), casilla de consentimiento obligatoria y enlace a la política de privacidad.
+**Recomendación:** **Laylo** si el objetivo principal es avisar de fechas y entradas a los fans de Instagram. **Brevo** o **MailerLite** si se quiere un newsletter clásico. Hay que elegir uno antes de activar el formulario (Netlify Forms, la opción temporal prevista, se descartó). En cualquier caso: doble confirmación (double opt-in), casilla de consentimiento obligatoria y enlace a la política de privacidad.
 
 ---
 
 ## 6. Shows: archivo simple vs CMS
+
+> **Decisión (2026-11-17): opción A sola.** No habrá CMS ni login en `/admin`: los shows se editan directamente en `src/content/shows.yaml`. Lo que sigue queda como referencia.
 
 | | **A. Archivo `shows.yaml` editado a mano** | **B. CMS por Git (Sveltia/Decap CMS) en `/admin`** | **C. CMS externo (Sanity, Contentful…)** |
 |---|---|---|---|
@@ -122,13 +123,13 @@ El formulario quedará preparado con un **"adaptador"**: un ajuste en `site.ts` 
 | Dónde viven los datos | En el repo | **En el mismo archivo del repo** | En sus servidores |
 | Riesgo | Errores de formato (Astro los detecta antes de publicar) | Bajo | Que el servicio cambie de precio o cierre |
 
-**Recomendación: A + B juntas.** Los shows viven en `src/content/shows.yaml` (opción A) y además se instala **Sveltia CMS**, compatible con Decap, en `tuweb.com/admin`. Es un panel con formulario que **edita ese mismo archivo**. El artista usa el formulario; tú o yo podemos editar el archivo directamente si hace falta. Nada depende de servicios externos y, si el CMS fallara algún día, el archivo sigue ahí. Requisito: quien edite necesita una cuenta gratuita de GitHub con acceso al repo. Si eso no encaja con el artista, la alternativa es la C.
+**Recomendación original (descartada): A + B juntas.** Los shows viven en `src/content/shows.yaml` (opción A) y además se instala **Sveltia CMS**, compatible con Decap, en `tuweb.com/admin`. Es un panel con formulario que **edita ese mismo archivo**. El artista usa el formulario; tú o yo podemos editar el archivo directamente si hace falta. Nada depende de servicios externos y, si el CMS fallara algún día, el archivo sigue ahí. Requisito: quien edite necesita una cuenta gratuita de GitHub con acceso al repo. Si eso no encaja con el artista, la alternativa es la C.
 
 Campos de cada show: `date`, `venue`, `city`, `country`, `ticketUrl`, `soldOut` (sí/no) y `placeholder` (sí/no).
 
 **Datos de ejemplo:** unas 8 fechas con sala `PLACEHOLDER VENUE`, `placeholder: true` y un comentario `# DATOS DE EJEMPLO – BORRAR` en el archivo. Mientras alguna fecha tenga `placeholder: true`, la web muestra una etiqueta discreta "SAMPLE DATA" para que no se publique por error.
 
-**Shows pasados:** se ocultan al generar la web. Para que desaparezcan aunque nadie toque nada, se programa una regeneración diaria automática (una tarea programada de GitHub, gratis, que avisa a Netlify).
+**Shows pasados:** se ocultan al generar la web. Para que desaparezcan aunque nadie toque nada, se programa una regeneración diaria automática (una tarea programada de GitHub, gratis, que avisa al alojamiento; en Vercel, con un "Deploy Hook").
 
 ---
 
@@ -141,12 +142,11 @@ content/              ← tú dejas aquí los archivos originales
   videos/             ← (mover aquí desde design/videos)
 src/
   config/site.ts      ← redes, contactos, portada, newsletter, color
-  content/shows.yaml  ← lista de shows (la edita el CMS)
+  content/shows.yaml  ← lista de shows (se edita a mano)
   components/  Header, Logo, Hero, HeroMedia, Duotone, NewsletterModal,
                ShowsList, About, Contact, SocialIcons, Footer
   pages/index.astro, privacy.astro
   styles/global.css   ← variables de color, tipografías, espaciados
-public/admin/         ← panel del CMS
 public/media/         ← vídeos de portada (cuando existan)
 CLAUDE.md
 ```
@@ -159,8 +159,8 @@ CLAUDE.md
 3. Hero con duotono, grano y estructura imagen/vídeo, más el botón del newsletter.
 4. NEXT SHOWS con datos de ejemplo y validación.
 5. About, Contact, footer con iconos y página de privacidad.
-6. Ventana del newsletter (con Netlify Forms como destino temporal).
-7. CMS en `/admin`, Netlify y regeneración diaria.
+6. Ventana del newsletter (con el proveedor que se elija).
+7. Publicación en Vercel y regeneración diaria. *(Sin CMS en `/admin`: descartado.)*
 8. Revisión en móvil.
 
 ## 9. Verificación
@@ -168,12 +168,12 @@ CLAUDE.md
 - Probar el duotono en Safari de iOS y en Chrome de Android, y abrir el enlace desde el navegador interno de Instagram (pegándolo en un DM).
 - `npm run build`: debe fallar si `shows.yaml` tiene un error de formato (lo probaremos a propósito).
 - Lighthouse (en Chrome DevTools) en modo móvil: objetivo de 90 o más en rendimiento y accesibilidad.
-- Newsletter: abrir y cerrar con teclado, que no se pueda enviar sin la casilla y que el envío aparezca en Netlify Forms.
-- CMS: añadir un show desde `/admin` y comprobar que aparece publicado en unos 2 minutos.
+- Newsletter: abrir y cerrar con teclado, que no se pueda enviar sin la casilla y que el envío llegue al proveedor elegido.
+- Shows: añadir uno en `shows.yaml`, hacer push y comprobar que aparece publicado en unos 2 minutos.
 
 ---
 
-## 10. Borrador de `CLAUDE.md` (se creará al aprobar)
+## 10. Borrador inicial de `CLAUDE.md` (histórico: el vigente es `CLAUDE.md`, sin Netlify ni CMS)
 
 ```markdown
 # KAS:ST — web oficial del DJ
@@ -220,8 +220,7 @@ El propietario es principiante: explicar las decisiones en lenguaje sencillo (en
 
 ## 11. Ajustes aprobados por el propietario
 - El dominio probablemente sea `kasst.art` (viene de la firma del artista). Anotarlo en `CLAUDE.md` como "por confirmar".
-- Explicar cómo iniciará sesión el artista en `/admin` y qué cuentas hacen falta (el repo es privado: habrá que invitarlo como colaborador en GitHub).
-- Verificar el límite gratuito actual de Netlify Forms antes de contar con él.
+- ~~Login del artista en `/admin`~~ y ~~Netlify / Netlify Forms~~: descartados el 2026-11-17. Alojamiento en Vercel; shows editados en `shows.yaml`.
 - Todavía no existe `content/photos/hero.jpg`: usar un marcador temporal (degradado oscuro o foto de prueba) y dejar claro dónde se pone la foto real.
 - Construir por fases y parar al terminar cada una para que el propietario la revise en el navegador. Hacer un commit al final de cada fase.
 - Empezar solo con las fases 1 a 3 y explicar cómo verlas en local.
